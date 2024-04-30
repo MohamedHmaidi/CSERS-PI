@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background-color: #4e0606;
+            box-shadow: 0 0 10px rgba(253, 252, 252, 0.475);
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .button-transform,
+        .column-transform {
+            transition: transform 0.4s ease;
+            font-weight: normal;
+            font-size: 14px;
+        }
+
+        .button-transform:hover,
+        .column-transform:hover {
+            transform: scale(1.1);
+            font-weight: bold;
+        }
+
+        .rotate-animation {
+            animation: rotateTitle 2s ease-in-out forwards;
+        }
+
+        @keyframes rotateTitle {
+            0% {
+                transform: rotateY(0deg);
+            }
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #ff0000, #000000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient:hover {
+            font-size: 3rem;
+        }
+
+        .highlight-row {
+            animation: blinker 1s linear infinite;
+            background-color: red;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .blinking-text {
+            animation: blinker 1s linear infinite;
+            color: red;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        table {
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+        }
+
+        
+        th {
+            background-color: #f44336; 
+            color: white;
+        }
+
+       
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .pagination-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background-color: #f44336; 
+            color: white;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+
+        .pagination-button:hover {
+            background-color: #ff4081; 
+        }
+
+        .pagination-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .pagination-info {
+            margin: 0 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 p-8">
+    <div class="sidebar">
+        <app-sidebar></app-sidebar>
+    </div>
+    <div class="main-content">
+        <app-header-stats></app-header-stats>
+
+        <br><br><br>
+        <h2 class="text-3xl font-bold mb-8 text-center rotate-animation text-gradient">
+            <span class="text-5xl">Incident List</span>
+        </h2>
+
+        <button class="button-transform bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4" (click)="navigateToTypeIncidents()">
+            <i class="fas fa-arrow-right mr-1"></i> All Incident Types
+        </button>
+
+        <div class="overflow-x-auto">
+            <div class="p-4 rounded-lg shadow-md bg-gray-200">
+                <table class="table-auto w-full" style="background-color: #F3F4F6;">
+
+                    <thead class="bg-red-200">
+                        <tr>
+                            <th class="column-transform px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                <i class="fas fa-map-marker-alt mr-1"></i> Location
+                            </th>
+                           
+                            <th class="column-transform px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                <i class="fas fa-calendar-alt mr-1"></i> Incident Date
+                            </th>
+                            <th class="column-transform px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                <i class="fas fa-info-circle mr-1"></i> Status
+                            </th>
+                            <th class="column-transform px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                <i class="fas fa-user mr-1"></i> User
+                            </th>
+                            <th class="column-transform px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                <i class="fas fa-exclamation-triangle mr-1"></i> Incident Type
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let i of incidents.slice(paginationStart, paginationEnd)" class="hover:bg-gray-100">
+                            <td class="border px-6 py-4 whitespace-nowrap column-transform">{{ i.localisation }}</td>
+                            <td class="border px-6 py-4 whitespace-nowrap column-transform">{{ i.incidentDate | date: 'medium' }}</td>
+                            <td class="border px-6 py-4 whitespace-nowrap column-transform">
+                                <span class="inline-block rounded-full px-2 py-1 text-sm font-semibold text-white {{ i.status === 'IN_PROGRESS' ? 'bg-yellow-500' : 'bg-blue-500' }}">
+                                    <i class="fas fa-circle mr-1"></i>
+                                    <span [ngClass]="{ 'blinking-text': i.typeIncident.niveauRisque === 5 && i.status === 'IN_PROGRESS' }">
+                                        {{ i.status === 'IN_PROGRESS' ? 'IN PROGRESS' : i.status }}
+                                    </span>
+                                </span>
+                            </td>
+                            <td class="border px-6 py-4 whitespace-nowrap column-transform">{{ i.user.firstname }} {{ i.user.lastname }}</td>
+                            <td class="border px-6 py-4 whitespace-nowrap column-transform">{{ i.typeIncident.nomTypeIncident }}</td>
+                            <td class="border px-6 py-4 whitespace-nowrap">
+                                <button (click)="openUpdateIncidentDialog(i)" class="button-transform bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                            
+                                <button (click)="openIncidentDetailDialog(i.idIncident)" class="button-transform bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            
+                                <button class="button-transform bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="deleteIncident(i.idIncident)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+       
+        <div class="pagination-container">
+            <button [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)" class="pagination-button">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="pagination-info">{{ currentPage }} / {{ totalPages }}</span>
+            <button [disabled]="currentPage * pageSize >= incidents.length" (click)="onPageChange(currentPage + 1)" class="pagination-button">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <app-footer-admin></app-footer-admin>
+</body>
+
+</html>

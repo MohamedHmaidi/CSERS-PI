@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    .chart-container {
+      text-align: center;
+    }
+
+    .chart-wrapper {
+      width: 45%;
+      display: inline-block;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart-container">
+    <div class="chart-wrapper">
+      <canvas id="lineCanvas"></canvas>
+    </div>
+    <div class="chart-wrapper">
+      <canvas id="barCanvas"></canvas>
+    </div>
+  </div>
+</body>
+</html>
