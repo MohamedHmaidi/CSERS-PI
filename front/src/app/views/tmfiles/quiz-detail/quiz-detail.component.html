@@ -1,0 +1,256 @@
+<!-- Template el admin Component-->
+<div>
+    <app-sidebar></app-sidebar>
+    <div class="relative md:ml-64 bg-blueGray-100">
+      <app-admin-navbar></app-admin-navbar>
+      <app-header-stats></app-header-stats>
+      <div class="px-4 md:px-10 mx-auto w-full -m-24">
+  
+  
+        <!-- Hne code el view-->
+        <router-outlet>
+
+
+            <div *ngIf="quiz" class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
+                <div class="rounded-t bg-white mb-0 px-6 py-6">
+                    <div class="text-center flex justify-between items-center"> <h6 class="text-blueGray-700 text-xl font-bold">{{ quiz.title }}</h6>
+                        <div class="detail-info"> <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 uppercase last:mr-0 mr-1">
+                                  Type: {{ quiz.type }}
+                            </span>
+                            <span class="separator"></span>  <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 uppercase last:mr-0 mr-1">
+                                  Passing Score: {{ quiz.passingScore }}
+                            </span>
+                            <span class="separator"></span>  <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 uppercase last:mr-0 mr-1">
+                                  Created Date: {{ quiz.createdDate }}
+                            </span>
+                        </div> 
+                    </div>
+                      <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+                        {{ quiz.description }}
+                      </h6>
+
+
+                      <h6 class="mt-4 text-xl font-bold">Questions:</h6>
+                      <div class="questions-container">
+                          <div *ngFor="let question of quiz.questions; let i = index" class="question-card">
+                              <div class="text-center flex justify-between items-center">
+                                  <h3 class="question-title" *ngIf="!isEditingQuestion(i)" (click)="editQuestion(i)">
+                                      Question {{ i + 1 }}: {{ question.text }}
+                                  </h3>
+                      
+                                  <div class="detail-info">
+                                      <button *ngIf="!isEditingQuestion(i)" class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" (click)="editQuestion(i)">Edit</button>
+                                      <button *ngIf="isEditingQuestion(i)" class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" (click)="deleteQuestion(i)">Delete</button>
+                                  </div>
+                              </div>
+                      
+                              <div *ngIf="isEditingQuestion(i)" class="edit-form">
+                                  <label for="questionText">Question Text:</label>
+                                  <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text" [(ngModel)]="question.text">
+                              </div>
+                              <ul>
+                                  <li *ngIf="!isEditingQuestion(i)">A: {{ question.answerChoiceA }}</li>
+                                  <li *ngIf="isEditingQuestion(i)">
+                                      <label for="answerChoiceA">Answer Choice A:</label>
+                                      <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text" [(ngModel)]="question.answerChoiceA">
+                                  </li>
+                      
+                                  <li *ngIf="!isEditingQuestion(i)">B: {{ question.answerChoiceB }}</li>
+                                  <li *ngIf="isEditingQuestion(i)">
+                                      <label for="answerChoiceA">Answer Choice B:</label>
+                                      <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text" [(ngModel)]="question.answerChoiceB">
+                                  </li>
+                      
+                                  <li *ngIf="!isEditingQuestion(i)">C: {{ question.answerChoiceC }}</li>
+                                  <li *ngIf="isEditingQuestion(i)">
+                                      <label for="answerChoiceA">Answer Choice C:</label>
+                                      <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text" [(ngModel)]="question.answerChoiceC">
+                                  </li>
+                      
+                                  <li *ngIf="!isEditingQuestion(i)">D: {{ question.answerChoiceD }}</li>
+                                  <li *ngIf="isEditingQuestion(i)">
+                                      <label for="answerChoiceA">Answer Choice D:</label>
+                                      <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text" [(ngModel)]="question.answerChoiceD">
+                                  </li>
+                              </ul>
+                      
+                              <p class="answer" *ngIf="!isEditingQuestion(i)"> Answer: {{ question.correctAnswer }}</p>
+                              <div *ngIf="isEditingQuestion(i)" class="edit-form">
+                                  <label for="correctAnswer">Correct Answer:</label>
+                                  <input class="answer" *ngIf="isEditingQuestion(i)" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text" [(ngModel)]="question.correctAnswer">
+                              </div>
+                      
+                              <p *ngIf="question.explanation && !isEditingQuestion(i)" class="explanation">
+                                  <span>Explanation:</span> {{ question.explanation }}
+                              </p>
+                      
+                              <div *ngIf="isEditingQuestion(i)" class="edit-form">
+                                  <label for="explanation">Explanation:</label>
+                                  <textarea *ngIf="isEditingQuestion(i)" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" [(ngModel)]="question.explanation"></textarea>
+                              </div>
+                      
+                              <button *ngIf="isEditingQuestion(i)" class="bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" (click)="updateQuestion(question)">Save</button>
+                          </div>
+                      </div>
+                      
+
+
+                <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+                <div *ngIf="showQuestionForm" class="flex flex-wrap">
+                    <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+                      </h6>
+
+                      <div class="flex flex-wrap">
+
+                        <div class="w-full lg:w-6/12 px-4">
+                            <div class="relative w-full mb-3">
+                              <label
+                                for="questionText"
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"
+                              >
+                              Question Text:
+                              </label>
+                              <input
+                                type="text"
+                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                id="questionText" [(ngModel)]="newQuestion.text"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="w-full lg:w-6/12 px-4">
+                            <div class="relative w-full mb-3">
+                              <label
+                              for="answerChoiceA"
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"
+                              >
+                              Answer Choice A:
+                              </label>
+                              <input
+                                type="text"
+                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="lucky.jesse"
+                                id="answerChoiceA" [(ngModel)]="newQuestion.answerChoiceA"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="w-full lg:w-6/12 px-4">
+                            <div class="relative w-full mb-3">
+                              <label
+                              for="answerChoiceB"
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"
+                              >
+                              Answer Choice B:
+                              </label>
+                              <input
+                                type="text"
+                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="lucky.jesse"
+                                id="answerChoiceB" [(ngModel)]="newQuestion.answerChoiceB"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="w-full lg:w-6/12 px-4">
+                            <div class="relative w-full mb-3">
+                              <label
+                              for="answerChoiceC"
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"
+                              >
+                              Answer Choice C:
+                              </label>
+                              <input
+                                type="text"
+                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="lucky.jesse"
+                                id="answerChoiceC" [(ngModel)]="newQuestion.answerChoiceC"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="w-full lg:w-6/12 px-4">
+                            <div class="relative w-full mb-3">
+                              <label
+                              for="answerChoiceD"
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"
+                              >
+                              Answer Choice D:
+                              </label>
+                              <input
+                                type="text"
+                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="lucky.jesse"
+                                id="answerChoiceD" [(ngModel)]="newQuestion.answerChoiceD"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="w-full lg:w-6/12 px-4">
+                            <div class="relative w-full mb-3">
+                              <label
+                              for="correctAnswer"
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"
+                              >
+                              Correct Answer (A, B, C, or D):
+                              </label>
+                              <input
+                                type="text"
+                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="lucky.jesse"
+                                id="correctAnswer" [(ngModel)]="newQuestion.correctAnswer"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="w-full lg:w-6/12 px-4">
+                            <div class="relative w-full mb-3">
+                              <label
+                              for="explanation"
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                htmlFor="grid-password"
+                              >
+                              Explanation:
+                              </label>
+                              <textarea
+                                type="text"
+                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                value="lucky.jesse"
+                                id="explanation" [(ngModel)]="newQuestion.explanation">
+                            </textarea>
+                            </div>
+                          </div>
+
+                  
+                 </div>
+                 <button type="button" class="bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" (click)="saveQuestion()">Save Question</button>
+                 <button type="button" class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" (click)="showQuestionForm = false">Cancel</button>
+        
+                </div>
+            </div>
+
+
+
+                <button *ngIf="!showQuestionForm" class="bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button" (click)="addQuestion()"> + Add Question 
+                </button> 
+            </div>
+        </div>
+
+
+  
+        </router-outlet>
+        <app-footer-admin></app-footer-admin>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  

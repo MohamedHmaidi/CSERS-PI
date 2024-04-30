@@ -1,0 +1,4 @@
+/* Adjust 'top' and 'left' for precise positioning */
+.relative img { 
+    top: 20px;   
+}
