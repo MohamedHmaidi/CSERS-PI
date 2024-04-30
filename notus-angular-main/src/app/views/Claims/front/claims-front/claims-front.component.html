@@ -1,0 +1,204 @@
+<app-index-navbar></app-index-navbar>
+<div class="pt-10 bg-blueGray-100">
+
+    <div class="container mx-auto px-4">
+        <div class="flex flex-wrap text-center justify-center">
+            <div class="w-full lg:w-6/12 px-4 mt-5">
+              <h2 class="text-4xl font-semibold text-blueGray-100">.</h2>
+              <h2 class="text-4xl font-semibold text-blueGray-100">.</h2>
+              <h2 class="text-4xl font-semibold text-black">Claims</h2>
+              <p class="text-lg leading-relaxed mt-4 mb-4 text-blueGray-400">
+                Feel free to let us know if you got any suggestions, feedback or issues you have encountered while using our platform & services!
+                <br>
+                The following is a list of complaints made by you.
+              </p>
+            </div>
+          </div>
+        
+          <div class="flex justify-end">
+            <button (click)="navigateToClaimCreation()" class="text-teal-500 bg-transparent border border-solid border-teal-500 hover:bg-teal-500 hover:text-white active:bg-teal-600 font-bold uppercase text-sm px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                <i class="fas fa-plus"></i> Add Claim
+              </button>
+          </div>
+    
+        <div class="flex flex-wrap mt-4">
+            <div class="w-full mb-12 px-4">
+                <div
+                class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
+                [ngClass]="color === 'light' ? 'bg-white' : 'bg-red-900 text-white'"
+              >
+              <div class="rounded-t mb-0 px-4 py-3 border-0 flex justify-between items-center">
+                <h3
+                  class="font-semibold text-lg flex-grow-0"
+                  [ngClass]="color === 'light' ? 'text-blueGray-700' : 'text-white'"
+                >
+                  Claims list
+                </h3>
+                <!-- Small Input -->
+                <div class="relative  flex-shrink w-1/4">
+                  <span class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-2 py-1">
+                    <i class="fas fa-search"></i>
+                  </span>
+                  <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearchQueryChange()" placeholder="Search claims..." class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full pl-10"/>
+                </div>
+              </div>
+                
+                <!-- <button (click)="toggleSortDirection()">sort it</button> -->
+
+                <!-- <div *ngIf="filteredClaims && filteredClaims.length > 0">
+                  <h3>Search Results</h3>
+                  <div *ngFor="let claim of filteredClaims">
+                    
+                    <div>{{ claim.title }}</div>
+                  </div>
+                </div> -->
+
+                <div class="block w-full overflow-x-auto">
+                  <!-- Projects table -->
+                  <table class="items-center w-full bg-transparent border-collapse">
+                    <thead>
+                      <tr>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                          [ngClass]="
+                            color === 'light'
+                              ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                              : 'bg-red-800 text-red-300 border-red-700'
+                          "
+                          (click)="onSortByTitle()"
+                        >
+                          Title
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                          [ngClass]="
+                            color === 'light'
+                              ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                              : 'bg-red-800 text-red-300 border-red-700'
+                          "
+                          (click)="onSortByStatus()"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                          [ngClass]="
+                            color === 'light'
+                              ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                              : 'bg-red-800 text-red-300 border-red-700'
+                          "
+                          (click)="onSortByType()"
+                        >
+                          Type
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                          [ngClass]="
+                            color === 'light'
+                              ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                              : 'bg-red-800 text-red-300 border-red-700'
+                          "
+                        >
+                          Made by
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                          [ngClass]="
+                            color === 'light'
+                              ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                              : 'bg-red-800 text-red-300 border-red-700'
+                          "
+                          (click)="onSortByDate()"
+                        >
+                          Date
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                          [ngClass]="
+                            color === 'light'
+                              ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                              : 'bg-red-800 text-red-300 border-red-700'
+                          "
+                        ></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let claim of claims">
+                        <th
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
+                        >
+                        <div
+                        class="bg-blueGray-600 text-white p-3 text-center inline-flex items-center justify-center w-8 h-8 shadow-lg rounded-full"
+                      >
+                      <i ng-reflect-ng-class="far fa-file" class="far fa-file"></i>
+                      </div>
+                          <span
+                            class="ml-3 font-bold"
+                            [ngClass]="color === 'light' ? 'text-blueGray-600' : 'text-white'"
+                          >
+                          {{ claim.title }}
+                          </span>
+                        </th>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                          <i class="fas fa-circle text-orange-500 mr-2"></i> {{ claim.status }}
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                          <i class="fas fa-circle text-orange-500 mr-2"></i> {{ claim.claimType }}
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                          <div class="flex">
+                            <div *ngIf="claim.user">{{ claim.user.firstname }} {{ claim.user.lastname }}</div>
+                          </div>
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                          <div class="flex items-center">
+                            <div *ngIf="claim.date">{{ claim.date | date:'yyyy-MM-dd' }}</div>
+                          </div>
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right"
+                        >
+                        <button (click)="navigateToClaimInfo(claim.idClaim)" class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- pagination -->
+                <div class="py-2 flex justify-center">
+                  <nav class="block">
+                    <ul class="flex pl-0 rounded list-none flex-wrap">
+                      <li>
+                        <button *ngIf="currentPage > 0" (click)="previousPage()" class="first:ml-0 text-xs font-semibold flex w-8 h-8 mx-1 p-0 rounded-full items-center justify-center leading-tight relative border border-solid border-red-500 bg-white text-red-500">
+                          <i class="fas fa-chevron-left -ml-px"></i>
+                        </button>
+                      </li>
+                      <span class="text-gray-500 font-medium px-2">
+                            Page {{ currentPage + 1 }} of {{ totalPages }}
+                          </span>
+                      <li>
+                        <button *ngIf="currentPage < totalPages - 1" (click)="nextPage()" class="first:ml-0 text-xs font-semibold flex w-8 h-8 mx-1 p-0 rounded-full items-center justify-center leading-tight relative border border-solid border-red-500 bg-white text-red-500">
+                          <i class="fas fa-chevron-right -mr-px"></i>
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+
+<app-footer></app-footer>
