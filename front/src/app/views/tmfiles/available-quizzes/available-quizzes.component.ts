@@ -90,4 +90,14 @@ toggleModal(selectedQuiz?: Quiz): void {
   viewQuiz(quizId: number) {
     this.router.navigate(['/available-quizzes', quizId]);
   }
+
+  isYoutubeUrl(url: string): boolean {
+    return url.startsWith('https://www.youtube.com/watch?v=');
+  }
+
+  extractYoutubeVideoId(url: string): string {
+    const videoIdIndex = url.indexOf('v=') + 2;
+    const videoId = url.substring(videoIdIndex);
+    return videoId;
+  }
 }

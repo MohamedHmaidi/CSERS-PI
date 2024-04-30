@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { HttpClientModule } from '@angular/common/http'; 
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
 
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -105,7 +106,7 @@ import { QuizStatisticsComponent } from './views/tmfiles/quiz-statistics/quiz-st
     AddTrainingContentComponent,
     QuizStatisticsComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, NgxYoutubePlayerModule],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -60,7 +60,7 @@
 
 <!-- Modal -->
 <div *ngIf="showModal && selectedQuizForModal" class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-lg p-8 max-w-xl w-full" style="max-width: 800px;">
+  <div class="bg-white rounded-lg shadow-lg p-8 max-w-xl w-full" style="max-width: 800px; max-height: 80vh; overflow-y: auto; border-radius: 20px;">
     <!-- Modal content -->
     <div class="text-center mb-8">
       <h3 class="text-3xl font-semibold mb-2">{{ selectedQuizForModal.title }}</h3>
@@ -85,25 +85,59 @@
       </div>
       <!-- Display Training Content Information -->
       <div *ngIf="selectedQuizForModal.trainingContent">
+        <hr class="my-4">
         <div class="mt-4">
           <span class="text-gray-600">Training Content Title:</span>
           <span class="ml-2 font-semibold">{{ selectedQuizForModal.trainingContent.title }}</span>
         </div>
         <div class="mt-4">
-          <span class="text-gray-600">Training Content Description:</span>
+          <span class="text-gray-600">Description:</span>
           <span class="ml-2 font-semibold">{{ selectedQuizForModal.trainingContent.description }}</span>
         </div>
         <div class="mt-4">
-          <span class="text-gray-600">Training Content Type:</span>
+          <span class="text-gray-600">Type:</span>
           <span class="ml-2 font-semibold">{{ selectedQuizForModal.trainingContent.type }}</span>
         </div>
         <div class="mt-4">
-          <span class="text-gray-600">Video:</span>
-          <span class="ml-2 font-semibold">{{ selectedQuizForModal.trainingContent.contentUrl }}</span>
-        </div>
-        <div class="mt-4">
-          <span class="text-gray-600">Training Content Created Date:</span>
+          <span class="text-gray-600">Created on:</span>
           <span class="ml-2 font-semibold">{{ selectedQuizForModal.trainingContent.createdDate | date:'mediumDate'}}</span>
+        </div>
+        <div *ngIf="selectedQuizForModal.trainingContent.type === 'VIDEO'" class="mt-4">
+          <div class="flex justify-center">
+            <youtube-player
+              [videoId]="extractYoutubeVideoId(selectedQuizForModal.trainingContent.contentUrl)"
+              [height]="300"
+              [width]="500"
+              style="border-radius: 10px;">
+            </youtube-player>
+          </div>
+        </div>
+        <div *ngIf="selectedQuizForModal.trainingContent.type === 'DOCUMENT'" class="mt-4">
+          <span class="text-gray-600">Training Content Type:</span>
+          <span class="ml-2 font-semibold">Document</span>
+          <!-- Display document icon -->
+          <div class="flex items-center mt-2">
+            <i class="far fa-file-alt text-gray-600 text-xl mr-2"></i>
+            <span class="text-blueGray-500">{{ selectedQuizForModal.trainingContent.contentUrl }}</span>
+          </div>
+        </div>
+        <div *ngIf="selectedQuizForModal.trainingContent.type === 'PRESENTATION'" class="mt-4">
+          <span class="text-gray-600">Training Content Type:</span>
+          <span class="ml-2 font-semibold">Presentation</span>
+          <!-- Display presentation icon -->
+          <div class="flex items-center mt-2">
+            <i class="fas fa-file-powerpoint text-red-500 text-xl mr-2"></i>
+            <span class="text-blueGray-500">{{ selectedQuizForModal.trainingContent.contentUrl }}</span>
+          </div>
+        </div>
+        <div *ngIf="selectedQuizForModal.trainingContent.type === 'EXTERNAL_URL'" class="mt-4">
+          <span class="text-gray-600">Training Content Type:</span>
+          <span class="ml-2 font-semibold">External URL</span>
+          <!-- Display external link icon -->
+          <div class="flex items-center mt-2">
+            <i class="fas fa-external-link-alt text-green-500 text-xl mr-2"></i>
+            <a href="{{ selectedQuizForModal.trainingContent.contentUrl }}" target="_blank" rel="noopener noreferrer" class="text-blueGray-500 underline hover:no-underline">{{ selectedQuizForModal.trainingContent.contentUrl }}</a>
+          </div>
         </div>
       </div>
     </div>
