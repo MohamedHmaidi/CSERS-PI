@@ -1,0 +1,34 @@
+.fancy-quiz-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sans-serif; 
+  }
+  
+  .fancy-quiz-table th,
+  .fancy-quiz-table td {
+    border: 1px solid #ddd;
+    padding: 10px; 
+    text-align: left; 
+  }
+  
+  .fancy-quiz-table th {
+    background-color: #f0f0f0; /* Example light gray header */
+  }
+  
+  .fancy-quiz-table tr:nth-child(even) { 
+    background-color: #fafafa; /* Example alternating row color */
+  }
+  
+  h3.font-semibold.text-lg.text-blueGray-700 { 
+    margin-bottom: 20px; /* Adjust the spacing as desired */
+}
+  /* ... Add more styles for buttons, images, etc if needed */
+  
+  button.bg-green-500.text-white.active:bg-green-600.font-bold.uppercase.text-xs.px-4.py-2.rounded.shadow.hover:shadow-md.outline-none.focus:outline-none.mr-1.ease-linear.transition-all.duration-150  {
+    margin-bottom: 15px; /* Add margin here */
+  }
+
+  .clickable-row:hover { 
+    background-color: #f0f0f0; /* Example: Light gray background on hover */
+    cursor: pointer;
+  }
