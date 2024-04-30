@@ -49,6 +49,12 @@ public class QuizController {
         return quizService.updateQuiz(id, updatedQuiz); // Delegate to service method
     }
 
+    // Get the training content ID associated with a quiz by quiz ID
+    @GetMapping("/{quizId}/trainingContentId")
+    public Long getTrainingContentIdByQuizId(@PathVariable Long quizId) {
+        return quizService.getTrainingContentIdByQuizId(quizId);
+    }
+
 
     // Endpoint to get the most popular quiz type
     @GetMapping("/statistics/mostPopularQuizType")

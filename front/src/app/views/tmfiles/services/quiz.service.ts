@@ -46,4 +46,9 @@ export class QuizService {
   getAverageQuizScore(): Observable<number> {
     return this.http.get<number>(`${this.backendUrl}/quizzes/statistics/averageQuizScore`);
   }
+
+  getTrainingContentIdByQuizId(quizId: number): Observable<number> {
+    return this.http.get<number>(`${this.backendUrl}/quizzes/${quizId}/trainingContentId`);
+  }
+
 }

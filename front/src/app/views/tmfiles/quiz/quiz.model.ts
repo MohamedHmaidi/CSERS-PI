@@ -1,4 +1,6 @@
 import { QuizQuestion } from "./quiz-question.model";
+import { TrainingContent } from "./training-content.model"; // Import TrainingContent model
+
 
 export interface Quiz {
     id: number;
@@ -7,6 +9,8 @@ export interface Quiz {
     passingScore: number; 
     type: string; 
     createdDate: string;
-    questions: QuizQuestion[]; 
+    questions: QuizQuestion[];
+    trainingContent?: TrainingContent; // Optional TrainingContent property
+
   }
   

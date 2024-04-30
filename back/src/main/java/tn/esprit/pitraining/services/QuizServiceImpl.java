@@ -44,6 +44,21 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
+    public Long getTrainingContentIdByQuizId(Long quizId) {
+        Optional<Quiz> quizOptional = quizRepository.findById(quizId);
+        if (quizOptional.isPresent()) {
+            Quiz quiz = quizOptional.get();
+            TrainingContent trainingContent = quiz.getTrainingContent();
+            if (trainingContent != null) {
+                return trainingContent.getId(); // Retrieve training_content_id
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Training content not found for Quiz ID: " + quizId);
+    }
+
+
+
+    @Override
     public Optional<Quiz> getQuizById(Long id) {
         return quizRepository.findById(id);
     }

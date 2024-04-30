@@ -59,8 +59,8 @@
 <app-footer></app-footer>
 
 <!-- Modal -->
-<div *ngIf="showModal" class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-lg p-8 max-w-md">
+<div *ngIf="showModal && selectedQuizForModal" class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg p-8 max-w-xl w-full" style="max-width: 800px;">
     <!-- Modal content -->
     <div class="text-center mb-8">
       <h3 class="text-3xl font-semibold mb-2">{{ selectedQuizForModal.title }}</h3>
@@ -73,7 +73,7 @@
       </div>
       <div class="mt-4">
         <span class="text-gray-600">Total Questions:</span>
-        <span class="ml-2 font-semibold">{{ selectedQuizForModal.questions.length }}</span>
+        <span class="ml-2 font-semibold">{{ selectedQuizForModal.questions?.length || 0 }}</span>
       </div>
       <div class="mt-4">
         <span class="text-gray-600">Quiz Type:</span>
@@ -83,12 +83,38 @@
         <span class="text-gray-600">Created Date:</span>
         <span class="ml-2 font-semibold">{{ selectedQuizForModal.createdDate | date:'mediumDate'}}</span>
       </div>
+      <!-- Display Training Content Information -->
+      <div *ngIf="selectedQuizForModal.trainingContent">
+        <div class="mt-4">
+          <span class="text-gray-600">Training Content Title:</span>
+          <span class="ml-2 font-semibold">{{ selectedQuizForModal.trainingContent.title }}</span>
+        </div>
+        <div class="mt-4">
+          <span class="text-gray-600">Training Content Description:</span>
+          <span class="ml-2 font-semibold">{{ selectedQuizForModal.trainingContent.description }}</span>
+        </div>
+        <div class="mt-4">
+          <span class="text-gray-600">Training Content Type:</span>
+          <span class="ml-2 font-semibold">{{ selectedQuizForModal.trainingContent.type }}</span>
+        </div>
+        <div class="mt-4">
+          <span class="text-gray-600">Video:</span>
+          <span class="ml-2 font-semibold">{{ selectedQuizForModal.trainingContent.contentUrl }}</span>
+        </div>
+        <div class="mt-4">
+          <span class="text-gray-600">Training Content Created Date:</span>
+          <span class="ml-2 font-semibold">{{ selectedQuizForModal.trainingContent.createdDate | date:'mediumDate'}}</span>
+        </div>
+      </div>
     </div>
     <div class="flex justify-center mt-8">
-      <button class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" (click)="toggleModal()"> <i class="fas fa-times"></i></button>
-      <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" (click)="viewQuiz(selectedQuizForModal.id)"><i class="fas fa-sign-in-alt"></i></button>
+      <button class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" (click)="toggleModal()"> <i class="fas fa-times"></i> Close</button>
+      <button class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" (click)="viewQuiz(selectedQuizForModal?.id)"><i class="fas fa-sign-in-alt"></i> View Quiz</button>
     </div>
   </div>
 </div>
+
+
+
 <div *ngIf="showModal" class="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40"></div>
 

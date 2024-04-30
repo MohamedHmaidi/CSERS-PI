@@ -14,6 +14,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Query("SELECT q.type FROM Quiz q GROUP BY q.type ORDER BY COUNT(q) DESC LIMIT 1")
     String findMostPopularQuizType();
 
+
     @Query("SELECT COUNT(q) FROM Quiz q")
     long getTotalQuizzesCount();
 

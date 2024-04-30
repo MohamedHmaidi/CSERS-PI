@@ -13,6 +13,9 @@ public interface QuizService {
 
     List<Quiz> getQuizzesByTrainingContentId(Long trainingContentId); // New method
 
+    Long getTrainingContentIdByQuizId(Long quizId); // New method to retrieve training_content_id by quizId
+
+
     Quiz saveQuiz(Quiz quiz);
 
     Quiz updateQuiz(Long id, Quiz updatedQuiz);
