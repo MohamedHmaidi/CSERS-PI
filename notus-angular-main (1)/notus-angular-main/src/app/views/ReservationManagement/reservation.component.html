@@ -1,0 +1,12 @@
+<h1>Reservations</h1>
+
+<ul>
+  <li *ngFor="let reservation of reservations">
+    Reservation ID: {{ reservation.idReservation }}<br>
+    Reserved Quantity: {{ reservation.reservedQuantity }}<br>
+    Date: {{ reservation.dateReservation | date }}<br>
+    Equipe Intervention: {{ reservation.equipeIntervention | json }}<br>
+    Ressource: {{ reservation.ressource | json }}<br>
+    <button (click)="modifyReservation(reservation)">Modify</button>
+  </li>
+</ul>

@@ -1,0 +1,165 @@
+<app-sidebar></app-sidebar>
+<app-index-navbar></app-index-navbar>
+
+
+
+
+<div class="overflow-x-auto flex flex-wrap mr-4" >
+  <h1 class="text-3xl font-bold mb-8 text-center mt-20">Resource List</h1>
+  
+
+  <table class="table-auto shadow-md rounded-lg w-full" style="margin-top: 70px;width: max-content;background-color: #F3F4F6;margin-left: 280px;">
+
+    <!-- Table header -->
+    <thead class="bg-red-200">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+          <i class="fas fa-map-marker-alt mr-1"></i> Nom ressource
+          <i class="fas fa-map-marker-alt mr-1"></i>
+          <input type="text" placeholder="Filtrer par nom" [(ngModel)]="nameFilter" (input)="applyFilters()" style="background-color: transparent;border-color: transparent;">
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+          <i class="fas fa-info-circle mr-1"></i> Localisation
+          <i class="fas fa-map-marker-alt mr-1"></i>
+          <input type="text" placeholder="Filtrer par localisation" [(ngModel)]="locationFilter" (input)="applyFilters()" style="background-color: transparent;border-color: transparent;">
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+          <i class="fas fa-calendar-alt mr-1"></i> Quantité
+          <i class="fas fa-map-marker-alt mr-1"></i>
+          <input type="text" placeholder="Filtrer par quantité" [(ngModel)]="quantityFilter" (input)="applyFilters()" style="background-color: transparent;border-color: transparent;">
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+          <i class="fas fa-calendar-alt mr-1"></i> Type ressource
+          <i class="fas fa-map-marker-alt mr-1"></i>
+          <input type="text" placeholder="Filtrer par type" [(ngModel)]="typeFilter" (input)="applyFilters()" style="background-color: transparent;border-color: transparent;">
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+          <i class="fas fa-calendar-alt mr-1"></i> Etat
+          <i class="fas fa-map-marker-alt mr-1"></i>
+          <input type="text" placeholder="Filtrer par état" [(ngModel)]="etatFilter" (input)="applyFilters()" style="background-color: transparent;border-color: transparent;">
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+          <i class="fas fa-info-circle mr-1"></i> Status
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+          <i class="fas fa-info-circle mr-1"></i> Ajoutee par
+        </th>
+      </tr>
+    </thead>
+    
+    <!-- Table body -->
+    <tbody>
+      <tr *ngFor="let i of ressources.slice(paginationStart, paginationEnd)" class="hover:bg-gray-100">
+        <td class="border px-6 py-4 whitespace-nowrap ">
+          <input *ngIf=" i.nomRessource"  [(ngModel)]=" i.nomRessource "
+          style="background-color: transparent; border-color: transparent;">
+        </td>
+        <td class="border px-6 py-4 whitespace-nowrap">
+          <input *ngIf=" i.localisation"  [(ngModel)]=" i.localisation "
+          style="background-color: transparent; border-color: transparent;">
+        </td>
+        <td class="border px-6 py-4 whitespace-nowrap">
+          <input *ngIf=" i.totalQuantite"  [(ngModel)]=" i.totalQuantite "
+          style="background-color: transparent; border-color: transparent;">
+        </td>
+        <td class="border px-6 py-4 whitespace-nowrap">
+          <select id="typeRessource" name="typeRessource" [(ngModel)]="i.typeRessource" class="block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-white" required>
+            <option *ngFor="let type of typeRessources" [value]="type">{{ type }}</option>
+          </select>
+        </td> 
+        <td class="border px-6 py-4 whitespace-nowrap">
+          <select id="etatRessource" name="etatRessource" [(ngModel)]="i.etatRessource" class="block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-white" required>
+            <option *ngFor="let etat of etatRessources" [value]="etat">{{ etat }}</option>
+          </select>
+        </td> 
+      
+        
+
+<!-- 
+        <td class="border px-6 py-4 whitespace-nowrap">{{ i.typeRessource }}</td>
+        <td class="border px-6 py-4 whitespace-nowrap">{{ i.etatRessource }}</td> -->
+      
+        <td>
+            <span [ngClass]="{'green-tick': i.archive, 'red-cross': !i.archive}" style="
+            margin-left: 50px;">
+              <i *ngIf="!i.archive" class="fa fa-check" style="color: green;font-size: 18px;"></i>
+              <i *ngIf="i.archive" class="fa fa-times" style="color: red;font-size: 18px;"></i>
+            </span>
+          
+            
+          </td>
+        
+        <td class="border px-6 py-4 whitespace-nowrap">
+         
+          <button (click)="archiveRessource(i)" mat-raised-button type="button" matTooltip="Archive/disarchive"
+          class="btn btn-success btn-link btn-sm btn-just-icon">
+          <i class="fa fa-archive"></i>          
+        </button>
+        <button  (click)="modifyRessource(i)"  mat-raised-button type="button" 
+        class="btn btn-success btn-link btn-sm btn-just-icon">
+        <i class="fas fa-sync-alt ml-2"></i>
+        
+      </button>
+
+        </td>
+
+        <td class="border px-6 py-4 whitespace-nowrap">
+          <input *ngIf=" i.user.firstname"
+          style="background-color: transparent; border-color: transparent;">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="flex justify-end mt-4">
+  <div class="flex justify-end mt-4">
+  <button (click)="redirectToAddRessource()" style="padding-right: 940px;">
+    <span style="font-size: 1.2rem;">➕</span>   </button>
+</div>
+  <div>
+      <button [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)" class="px-3 py-1 rounded border mr-2 hover:bg-gray-200">
+          <i class="fas fa-chevron-left"></i>
+      </button>
+      <span class="px-3 py-1 border rounded mr-2">{{ paginationStart + 1 }} - {{ paginationEnd }} / {{ ressources.length }}</span>
+      <button [disabled]="currentPage >= totalPages" (click)="onPageChange(currentPage + 1)" class="px-3 py-1 rounded border hover:bg-gray-200">
+          <i class="fas fa-chevron-right"></i>
+      </button>
+  </div>
+</div>
+
+
+
+<!-- Create chart here. -->
+<!-- <div>
+  <div class="chartContainer" style="display: inline-block; width: 50%; height: 50%;">
+    <div id="chart">
+      <div  style="font-weight: bold;">Percentage of used ressource types</div>
+      <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [labels]="chartOptions.labels"
+        [responsive]="chartOptions.responsive"></apx-chart>
+    </div>
+  </div>  -->
+<!-- 
+  <div style="display: block">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType"></canvas>
+  </div>
+  -->
+  <!-- <div class="chartContainer" style="display: inline-block; width: 50%; height: 50%;">
+    <div id="chart">
+      <div style="font-weight: bold;">Percentage of used resource types</div>
+      <canvas baseChart
+        [data]="chartData"
+        [labels]="chartLabels"
+        [options]="chartOptions"
+        [plugins]="chartPlugins"
+        [legend]="chartLegend"
+        [chartType]="chartType">
+      </canvas>
+    </div>
+  </div> -->
+
+
+<div class="mt-32 bg-blueGray-100">
+  <app-footer></app-footer>
+</div>
