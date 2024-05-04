@@ -1,0 +1,78 @@
+<div class="sidebar">
+    <app-sidebar></app-sidebar>
+</div>
+<div class="main-content" style="margin-left: 250px;">
+    <app-header-stats></app-header-stats>
+    <section class="container mx-auto p-10 md:py-12 px-0 md:p-8 md:px-0 relative">
+        <button class="absolute top-0 right-0 p-2 bg-blue-500 text-blue-500 border border-blue-500 rounded-md text-gray-800 mt-4 mr-4" (click)="openAddTypeDialog()">
+            <i class="fas fa-plus"></i> Add Type
+        </button>
+        <br><br> 
+        <h2 class="text-3xl font-bold mb-8 text-center">Liste des Types des Incidents</h2>
+        <section class="p-5 md:p-0 flex flex-wrap justify-center">
+            <div class="max-w-xs rounded overflow-hidden shadow-lg m-4 bg-gray-200 card fixed-size-card" *ngFor="let incident of incidents">
+                <div class="flex justify-center"> 
+                    <img class="w-20 h-20 object-contain" src="/assets/img/4325972.png" alt="Incident Image">
+                </div>
+                <div class="px-6 py-4">
+                    <div class="font-bold text-lg mb-2">
+                        <i class="fas fa-bell text-blue-500 mr-2"></i>
+                        {{ incident.nomTypeIncident }}
+                    </div>
+                    <p class="text-gray-700 text-base border border-gray-300 p-2 rounded-md">
+                        <i class="fas fa-align-left text-blue-500 mr-2"></i> 
+                        {{ incident.description }}
+                    </p>
+                    <p class="text-gray-700 text-base">
+                        <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i> 
+                        Niveau de risque : {{ incident.niveauRisque }}
+                    </p> 
+                    
+                    <div class="text-red-500">
+                        <span class="text-3xl" *ngFor="let star of [].constructor(incident.niveauRisque)">
+                            &#9733; 
+                        </span>
+                        <span class="text-3xl" *ngFor="let star of [].constructor(5 - incident.niveauRisque)">
+                            &#9734; 
+                        </span>
+                    </div>
+                    <h2 class="font-semibold mb-2">
+                        {{ incident.Niveau }}
+                    </h2>
+                    <button class="p-2 px-6 bg-red-500 text-white rounded-md delete-button flex items-center" (click)="deleteTypeIncident(incident.idTypeIncident)"> 
+                        <i class="fas fa-trash-alt mr-2"></i> 
+                        Delete
+                    </button> 
+                </div>
+            </div>
+        </section>
+    </section>
+    <app-footer-admin></app-footer-admin>
+</div>
+
+<style>
+    .card:hover {
+        transform: scale(1.1); 
+        transition: transform 0.3s ease; 
+    }
+    
+    .delete-button:hover {
+        background-color: #e53e3e; 
+    }
+    .sidebar {
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+        overflow-y: auto;
+    }
+    
+    .fixed-size-card {
+        width: 300px; 
+        height: 350px; 
+    }
+</style>

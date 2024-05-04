@@ -1,6 +1,14 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatDialogModule } from '@angular/material/dialog';
+
+import { NgxYoutubePlayerModule } from 'ngx-youtube-player';
+
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -8,13 +16,7 @@ import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
-import { AddIncidentComponent } from './views/add-incident/add-incident.component';
-
-
-//import { ServiceWorkerModule } from '@angular/service-worker';
 import { AngularFireMessagingModule } from "@angular/fire/messaging";
 import { AngularFireModule } from "@angular/fire";
 import { MessagingService } from "../core/service/messaging.service";
@@ -36,7 +38,42 @@ import {UpdateEquipeComponent} from "./views/admin/Equipe/updateequipe.component
 import {CreateMembreComponent} from "./views/admin/Membre/createmembre.component";
 import {MembregetallComponent} from "./views/admin/Membre/getallmembre.component";
 import {UpdateMembreComponent} from "./views/admin/Membre/updatemembre.component";
+
+
+//mohamed
+import { IncidentListComponent } from './views/incident-list/incident-list.component';
+import { UpdateIncidentComponent } from './views/update-incident/update-incident.component';
+import { AddIncidentComponent } from './views/add-incident/add-incident.component';
+import { TypeIncidentListComponent } from './views/type-incident-list/type-incident-list.component';
+import { AddIncidentTypeComponent } from './views/add-incident-type/add-incident-type.component';
 import {ChatComponent} from "./views/chat/chat.component";
+import { MapComponent } from './views/map/map.component';
+import { IncidentDetailComponent } from './views/incident-detail/incident-detail.component';
+
+
+//aymen
+import { ClaimsFrontComponent } from './views/front/claims-front/claims-front.component';
+import { ClaimsBackComponent } from './views/back/claims-back/claims-back.component';
+import { ClaimCreateComponent } from './views/front/claim-create/claim-create.component';
+import { ClaimInfoComponent } from './views/front/claim-info/claim-info.component';
+import { ClaimUpdateComponent } from './views/front/claim-update/claim-update.component';
+import { ResponsePerClaimComponent } from './views/front/response-per-claim/response-per-claim.component';
+import { ResponseCreateComponent } from './views/front/response-create/response-create.component';
+import { ClaimInfoBackComponent } from './views/back/claim-info-back/claim-info-back.component';
+import { ClaimCreateBackComponent } from './views/back/claim-create-back/claim-create-back.component';
+import { ClaimUpdateBackComponent } from './views/back/claim-update-back/claim-update-back.component';
+import { ClaimStatsBackComponent } from './views/back/claim-stats-back/claim-stats-back.component';
+
+//mahmoud
+import { QuizzesComponent } from "./views/quizzes/quizzes.component"; 
+import { QuizDetailComponent } from "./views/quiz-detail/quiz-detail.component"; 
+import { AddQuizComponent } from "./views/add-quiz/add-quiz.component";
+import { TrainingContentListComponent } from './views/training-content-list/training-content-list.component';
+import { AvailableQuizzesComponent } from './views/available-quizzes/available-quizzes.component';
+import { PassQuizComponent } from './views/pass-quiz/pass-quiz.component';
+import { AddTrainingContentComponent } from './views/add-training-content/add-training-content.component';
+import { QuizStatisticsComponent } from './views/quiz-statistics/quiz-statistics.component';
+
 
 // admin views
 import { DashboardComponent } from "./views/admin/dashboard/dashboard.component";
@@ -121,11 +158,40 @@ import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user
     MembregetallComponent,
     UpdateEquipeComponent,
     UpdateMembreComponent,
+    IncidentListComponent,
+    UpdateIncidentComponent,
     AddIncidentComponent,
+    TypeIncidentListComponent,
+    AddIncidentTypeComponent,
     ChatComponent,
+    MapComponent,
+    IncidentDetailComponent,
+    ClaimsFrontComponent,
+    ClaimsBackComponent,
+    ClaimCreateComponent,
+    ClaimInfoComponent,
+    ClaimUpdateComponent,
+    ResponsePerClaimComponent,
+    ResponseCreateComponent,
+    ClaimInfoBackComponent,
+    ClaimCreateBackComponent,
+    ClaimUpdateBackComponent,
+    ClaimStatsBackComponent,
+    QuizzesComponent,
+    QuizDetailComponent,
+    AddQuizComponent,
+    TrainingContentListComponent,
+    AvailableQuizzesComponent,
+    PassQuizComponent,
+    AddTrainingContentComponent,
+    QuizStatisticsComponent,
+
+
+
 
   ],
   imports: [
+    MatTableModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -133,18 +199,14 @@ import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user
     ReactiveFormsModule,
     CommonModule,
     AngularFireMessagingModule,
-     //CalendarModule,
-     //ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    //AngularFireDatabaseModule,
-    //AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebase),
     BrowserAnimationsModule,
     BrowserModule,
-    BrowserAnimationsModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory
-    })
+   MatSnackBarModule,
+   MatPaginatorModule,
+   MatSliderModule,
+   MatDialogModule,
+   NgxYoutubePlayerModule,
 
   ],
   providers: [MessagingService,AsyncPipe],

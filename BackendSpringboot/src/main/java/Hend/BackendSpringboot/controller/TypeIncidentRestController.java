@@ -55,9 +55,8 @@ public class TypeIncidentRestController {
         if (typeIncident.getNiveauRisque() != 0) {
             existingTypeIncident.setNiveauRisque(typeIncident.getNiveauRisque());
         }
-        if (typeIncident.getPlanUrgence() != null) {
-            existingTypeIncident.setPlanUrgence(typeIncident.getPlanUrgence());
-        }
+
+
 
         typeIncidentService.modifyIncidentType(existingTypeIncident);
         return existingTypeIncident;

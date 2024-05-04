@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Equipe } from "../../../../core/models/Equipe";
 import { EquipeService } from "../../../../core/service/EquipeService";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Disponibilite } from "../../../../core/models/Disponibilite";
 
 @Component({
@@ -18,7 +19,8 @@ export class UpdateEquipeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private equipeService: EquipeService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -68,16 +70,22 @@ export class UpdateEquipeComponent implements OnInit {
     this.equipeService.updateEquipe(this.equipeId, updatedEquipeData).subscribe(
       () => {
         console.log('Equipe updated successfully');
+        this.showSnackbar('Equipe updated successfully');
         // Redirect to the equipe list page or any other page as needed
         this.router.navigate(['/admin/listequipe']);
       },
       error => {
         console.error('Error updating equipe:', error);
+        this.showSnackbar('Error updating equipe');
         // Handle error, such as displaying an error message to the user
       }
     );
   }
-  
-  
-  
+
+  showSnackbar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Snackbar duration in milliseconds
+      verticalPosition: 'top' // Position of the snackbar
+    });
+  }
 }

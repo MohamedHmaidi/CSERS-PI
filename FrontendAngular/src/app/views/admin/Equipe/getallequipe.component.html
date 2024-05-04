@@ -22,7 +22,7 @@
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" [ngClass]="color === 'bg-white' ? 'bg-white text-white border-white' : 'bg-red-700 text-white border-red-700'">Action</th>
           </thead>
           <tbody>
-            <tr *ngFor="let equipe of equipes">
+            <tr *ngFor="let equipe of paginate()">
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ equipe.nomEquipe }}</td>
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ equipe.description }}</td>
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -63,6 +63,7 @@
     
   </div>
 </div>
+
 <div *ngIf="message" [ngClass]="{'flash-alert': showAlert}" class="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-500">
   <span class="text-xl inline-block mr-5 align-middle">
     <i class="fas fa-bell"></i>
@@ -75,5 +76,15 @@
     <span>×</span>
   </button>
 </div>
+
+<!-- Pagination -->
+<div class="flex justify-center mt-4">
+  <button class="pagination-button" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)"><i class="fas fa-angle-left"></i></button>
+  <ng-container *ngFor="let page of totalPages()">
+    <button class="pagination-button" [class.active]="page === currentPage" (click)="onPageChange(page)">{{ page }}</button>
+  </ng-container>
+  <button class="pagination-button" [disabled]="currentPage === totalPages().length || totalPages().length === 0" (click)="onPageChange(currentPage + 1)"><i class="fas fa-angle-right"></i></button>
+</div>
+
 
 

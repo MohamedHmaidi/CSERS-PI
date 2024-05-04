@@ -32,6 +32,11 @@ export class EquipegetallComponent implements OnInit {
   message: { title: string, body: string }; 
   showAlert= false;
 
+  // Pagination properties
+  currentPage = 1;
+  itemsPerPage = 2;
+
+
   @ViewChild('membreImages', { static: false }) membreImages: ElementRef;
 
   constructor(private equipeService: EquipeService, private membreService: MembreService , 
@@ -56,17 +61,26 @@ export class EquipegetallComponent implements OnInit {
       });
     }
 
-  loadEquipes() {
-    this.equipeService.getAllEquipes().subscribe((equipes) => {
-      this.equipes = equipes;
-      // Fetch members for each equipe
-      this.fetchMembersForEquipes();
-    });
-  }
-
-  openUpdatePage(equipeId: number) {
-    this.router.navigate(['/admin/updateequipe', equipeId]);
-  }
+    loadEquipes() {
+      this.equipeService.getAllEquipes().subscribe((equipes) => {
+        this.equipes = equipes;
+        console.log('Total Equipes:', this.equipes.length);
+        console.log('Current Page:', this.currentPage);
+        console.log('Total Pages:', this.totalPages());
+        // Fetch member images for each equipe
+    this.fetchMembersForEquipes();
+      });
+    }
+  
+    paginate() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = Math.min(startIndex + this.itemsPerPage, this.equipes.length);
+      return this.equipes.slice(startIndex, endIndex);
+    }
+    
+    openUpdatePage(equipeId: number) {
+      this.router.navigate(['/admin/updateequipe', equipeId]);
+    }
   
   fetchMembersForEquipes() {
     this.equipes.forEach(equipe => {
@@ -116,5 +130,18 @@ export class EquipegetallComponent implements OnInit {
   closeAlert(): void {
     this.showAlert = false; 
   }
+
+  totalPages(): number[] {
+    const total = Math.ceil(this.equipes.length / this.itemsPerPage);
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+  
+  onPageChange(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.totalPages().length) {
+      this.currentPage = pageNumber;
+      console.log('Current Page:', this.currentPage);
+    }
+  }
+  
 
 }

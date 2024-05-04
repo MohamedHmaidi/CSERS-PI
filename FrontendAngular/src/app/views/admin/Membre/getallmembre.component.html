@@ -62,9 +62,9 @@
               <tr>
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" [ngClass]="color === 'bg-white' ? 'bg-white text-white border-white' : 'bg-red-200 text-white border-red-200'">Nom</th>
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" [ngClass]="color === 'bg-white' ? 'bg-white text-white border-white' : 'bg-red-300 text-white border-red-300'">Prenom</th>
-                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" [ngClass]="color === 'bg-white' ? 'bg-white text-white border-white' : 'bg-red-400 text-white border-red-400'">Email</th>
+                
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" [ngClass]="color === 'bg-white' ? 'bg-white text-white border-white' : 'bg-red-500 text-white border-red-500'">Poste</th>
-                <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" [ngClass]="color === 'bg-white' ? 'bg-white text-white border-white' : 'bg-red-600 text-white border-red-600'">Number</th>
+               
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" [ngClass]="color === 'bg-white' ? 'bg-white text-white border-white' : 'bg-red-700 text-white border-red-700'">Competences Techniques</th>
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" [ngClass]="color === 'bg-white' ? 'bg-white text-white border-white' : 'bg-red-800 text-white border-red-800'">Certifications</th>
                 <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left" [ngClass]="color === 'bg-white' ? 'bg-white text-white border-white' : 'bg-red-900 text-white border-red-900'">Experience</th>
@@ -79,9 +79,9 @@
                   {{ membre.firstname }}
                 </td>                
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ membre.lastname}}</td>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ membre.email }}</td>
+               
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ membre.poste }}</td>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ membre.number }}</td>
+              
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ membre.competencesTechniques }}</td>
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ membre.certifications }}</td>
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ membre.experience }}</td>
@@ -105,8 +105,5 @@
     <div class="w-full mb-12 px-4">
     </div>
   </div>
-
-  <button class="bg-red-600 text-white active:bg-red-700 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" (click)="sendTestNotification()">Send Test Notification</button>
-
 
   

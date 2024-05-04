@@ -1,5 +1,5 @@
 <app-sidebar></app-sidebar>
-
+<app-header-stats></app-header-stats>
 <div class="container mx-auto px-4 h-full">
     <div class="flex content-center items-center justify-center h-full">
         <div class="w-full lg:w-6/12 px-4">
@@ -35,16 +35,22 @@
                             </label>
                             <textarea id="description" name="description" [(ngModel)]="incident.description" rows="3" class="block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 resize-none" required></textarea>
                         </div>
-                        
-                        <!-- Add TypeIncident fields here if needed -->
-                        
+                        <div class="mb-4">
+                            <label for="typeIncident" class="block text-lg font-medium text-gray-800 mb-2">
+                                <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i> Type Incident:
+                            </label>
+                            <select id="typeIncident" name="typeIncident" [(ngModel)]="incident.typeIncident" class="block w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50 bg-white" required>
+                                <option *ngFor="let type of typesIncident" [ngValue]="type">{{ type.nomTypeIncident }}</option>
+                            </select>
+                        </div>
                         <div class="flex justify-center">
                             <button type="submit" class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150" (click)="sendTestNotification()">Add Incident <i class="fas fa-plus-circle ml-2"></i></button>
+
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<app-footer-admin></app-footer-admin>
+  </div>
+  <app-footer-admin></app-footer-admin>

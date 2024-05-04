@@ -4,10 +4,6 @@ export class TypeIncident {
   nomTypeIncident: string;
   description: string;
   niveauRisque: number;
-  id_plan: number;
+  planUrgence: string;
   incidents: Incident[]; 
-
-  constructor() {
-    this.idTypeIncident = 1;
-}
 }

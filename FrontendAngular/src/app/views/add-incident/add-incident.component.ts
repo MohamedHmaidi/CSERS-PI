@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Incident } from '../../../core/models/incident';
 import { TypeIncident } from '../../../core/models/type-incident';
-import { NotificationService } from '../../../core/service/NotificationService';
 import { IncidentService } from '../../../core/service/incident.service';
-import { MessagingService } from '../../../core/service/messaging.service';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../core/service/NotificationService';
+import { MessagingService } from '../../../core/service/messaging.service';
 
 @Component({
   selector: 'app-add-incident',
@@ -16,21 +16,28 @@ export class AddIncidentComponent implements OnInit {
   typesIncident: TypeIncident[];
   incident: Incident = new Incident(); 
 
-  // Static property to hold idTypeIncident
-  static idTypeIncident: number = 1;
-
-  constructor(private incidentService: IncidentService, private router: Router, private messagingService: MessagingService,
-    private notificationService: NotificationService) { }
+  constructor(private incidentService: IncidentService, private snackBar: MatSnackBar, private router: Router
+    , private messagingService: MessagingService,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit(): void {
-
+    this.getTypesIncident();
     this.enableNotifications(); 
-    
+  }
+
+  getTypesIncident(): void {
+    this.incidentService.getTypesIncident()
+      .subscribe(types => this.typesIncident = types);
   }
 
   addIncident(): void {
-    if (!this.incident.localisation) {
-      console.error('Please fill in all required fields!');
+    if (!this.incident.typeIncident || !this.incident.localisation) {
+      this.snackBar.open('Please fill in all required fields!', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        panelClass: ['bg-red-500', 'text-white']
+      });
       return;
     }
 
@@ -55,6 +62,11 @@ export class AddIncidentComponent implements OnInit {
           },
           error => {
             console.error('Error getting geolocation:', error);
+            this.snackBar.open('Error getting geolocation!', 'Close', {
+              duration: 3000,
+              verticalPosition: 'top',
+              panelClass: ['bg-red-500', 'text-white']
+            });
           },
           {
             enableHighAccuracy: true 
@@ -76,23 +88,14 @@ export class AddIncidentComponent implements OnInit {
 
 
   addIncidentToService(): void {
-    // Create a placeholder TypeIncident object
-    const typeIncident: TypeIncident = {
-      idTypeIncident: AddIncidentComponent.idTypeIncident,
-      nomTypeIncident: 'Placeholder',
-      description: 'Placeholder description',
-      niveauRisque: 1,
-      id_plan: 1,
-      incidents: []
-    };
-    
-    // Assign the placeholder TypeIncident object to incident
-    this.incident.typeIncident = typeIncident;
-   
     this.incidentService.addIncident(this.incident)
       .subscribe(() => {
-        console.log('Incident added successfully!');
-       
+        this.snackBar.open('Incident added successfully!', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: ['bg-green-500', 'text-white']
+        });
+        this.router.navigate(['/incidents']); 
       });
   }
 

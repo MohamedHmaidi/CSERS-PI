@@ -1,8 +1,17 @@
 package Hend.BackendSpringboot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.List;
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "type_incident")
 public class TypeIncident {
@@ -21,58 +30,9 @@ public class TypeIncident {
     @Column(name = "niveau_risque")
     private int niveauRisque;
 
-    @ManyToOne
-    @JoinColumn(name = "id_plan")
-    private PlanUrgence planUrgence;
 
-    //@OneToMany(mappedBy = "typeIncident", cascade = CascadeType.ALL)
-    //private List<Incident> incidents;
+    @JsonIgnore
+    @OneToMany(mappedBy = "typeIncident", cascade = CascadeType.ALL)
+    private List<Incident> incidents;
 
-    public Long getIdTypeIncident() {
-        return idTypeIncident;
-    }
-
-    public void setIdTypeIncident(Long idTypeIncident) {
-        this.idTypeIncident = idTypeIncident;
-    }
-
-    public String getNomTypeIncident() {
-        return nomTypeIncident;
-    }
-
-    public void setNomTypeIncident(String nomTypeIncident) {
-        this.nomTypeIncident = nomTypeIncident;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getNiveauRisque() {
-        return niveauRisque;
-    }
-
-    public void setNiveauRisque(int niveauRisque) {
-        this.niveauRisque = niveauRisque;
-    }
-
-    public PlanUrgence getPlanUrgence() {
-        return planUrgence;
-    }
-
-    public void setPlanUrgence(PlanUrgence planUrgence) {
-        this.planUrgence = planUrgence;
-    }
-
-    //public List<Incident> getIncidents() {
-        //return incidents;
-   // }
-
-   // public void setIncidents(List<Incident> incidents) {
-        //this.incidents = incidents;
-    //}
 }

@@ -1,0 +1,89 @@
+.quiz-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.form-radio {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #4a5568;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.form-radio:checked {
+    background-color: #4a5568;
+    border-color: #4a5568;
+}
+
+.form-radio:checked::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 3px;
+    background-color: #fff;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #1a202c;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #2d3748;
+}
+
+.btn-primary {
+    background-color: #2b6cb0;
+}
+
+.btn-primary:hover {
+    background-color: #2c5282;
+}
+
+.form-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: #2b6cb0;
+    outline: none;
+}
+
+.form-textarea {
+    display: block;
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+.form-textarea:focus {
+    border-color: #2b6cb0;
+    outline: none;
+}

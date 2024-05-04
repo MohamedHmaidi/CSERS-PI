@@ -31,11 +31,13 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**",
                                 "http://localhost:4200",
                                 "http://localhost:3000",
+                                "http://localhost:8089",
                                 "/api/v1/file-controller/New",
                                 "/api/v1/auth/upload",
                                 "/v2/api-docs",
@@ -46,6 +48,7 @@ public class SecurityConfiguration {
                                 "/configuration/ui",
                                 "/configuration/security",
                                 "/swagger-ui/**",
+                                "/csers/claim/add-claim",
                                 "/webjars/**",
                                 "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/v1/file-controller/New").hasRole("USER")
@@ -62,6 +65,7 @@ public class SecurityConfiguration {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:4200");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");

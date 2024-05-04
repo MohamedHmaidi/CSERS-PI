@@ -1,18 +1,24 @@
 package Hend.BackendSpringboot.controller;
 
+import Hend.BackendSpringboot.entity.ChatMessage;
 import Hend.BackendSpringboot.entity.Incident;
+import Hend.BackendSpringboot.service.ChatMessageService;
 import Hend.BackendSpringboot.service.IIncidentService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/incident")
-@CrossOrigin(origins = "http://localhost:4200")
 public class IncidentRestController {
     IIncidentService incidentService;
+
+    private final ChatMessageService chatMessageService;
 
     // http://localhost:8089/csers/incident/add-incident
     @PostMapping("/add-incident")
@@ -74,6 +80,25 @@ public class IncidentRestController {
 
         incidentService.modifyIncident(existingIncident);
         return existingIncident;
+    }
+
+    // http://localhost:8089/csers/incident/incidents-per-day
+    @GetMapping("/incidents-per-day")
+    public Map<Date, Integer> getIncidentsPerDay() {
+        return incidentService.countIncidentsPerDay();
+    }
+
+    // http://localhost:8089/csers/incident/incidents-by-type
+    @GetMapping("/count-by-type")
+    public ResponseEntity<List<Object[]>> getIncidentsCountByType() {
+        List<Object[]> incidentCounts = incidentService.countIncidentsByType();
+        return ResponseEntity.ok(incidentCounts);
+    }
+
+
+    @GetMapping("/getAllMsg")
+    public List<ChatMessage> getAllMessages() {
+        return chatMessageService.getAllMessages();
     }
 
 }

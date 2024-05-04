@@ -1,4 +1,5 @@
 import { TypeIncident } from "./type-incident";
+import { User } from "./user";
 export class Incident {
     idIncident: number;
     localisation: string;
@@ -7,10 +8,6 @@ export class Incident {
     status: string;
     latitude: number; 
     longitude: number; 
+    user: User
     typeIncident: TypeIncident;
-    id_user: number = 1; 
-
-    constructor() {
-        this.id_user = 1;
-    }
 }
