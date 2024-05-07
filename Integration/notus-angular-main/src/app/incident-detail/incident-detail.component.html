@@ -48,11 +48,26 @@
 
         #map {
             position: absolute;
-            top: 20px;
+            top: 0;
             bottom: 0;
             right: 0;
             left: 0;
             width: 100%;
+        }
+
+        .locate-me-button {
+            transition: all 0.3s ease;
+            font-size: 14px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .locate-me-button:hover {
+            background-color: #45a049;
         }
 
         .info-container {
@@ -107,6 +122,7 @@
             display: grid;
             grid-gap: 20px;
             animation: fadeInUp 0.8s ease;
+            position: relative; /* Pour positionner le bouton de localisation */
         }
 
         .incident-info p {
@@ -128,21 +144,6 @@
 
         .incident-info i {
             cursor: pointer;
-        }
-
-        .button-transform {
-            transition: all 0.3s ease;
-            font-size: 16px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .button-transform:hover {
-            background-color: #45a049;
         }
 
         @keyframes fadeInDown {
@@ -182,6 +183,7 @@
                 <p>{{ incident.description }}</p>
             </div>
             <div class="incident-info" *ngIf="incident">
+               
                 <p><strong><i class="fas fa-map-marker-alt" data-tooltip="Location"></i> Localisation:</strong>
                     {{ incident.localisation }}</p>
                 <p><strong><i class="fas fa-calendar-alt" data-tooltip="Incident Date"></i> Incident Date:</strong>
@@ -197,6 +199,10 @@
                     {{ incident.typeIncident.nomTypeIncident }}</p>
                 <p><strong><i class="fas fa-user" data-tooltip="Reported By"></i> User:</strong>
                     {{ incident.user.firstname }} {{ incident.user.lastname }}</p>
+
+                    <button class="locate-me-button" (click)="locateMe()">
+                        <i class="fas fa-map-marker-alt"></i> Locate Me
+                    </button>
             </div>
             
         </div>

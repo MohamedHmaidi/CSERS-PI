@@ -33,6 +33,7 @@ const routes: Routes = [
   {path: 'add-incident', component: AddIncidentComponent} ,
   {path: 'update-incident/:id', component:  UpdateIncidentComponent} ,
   {path: 'addType', component:   AddIncidentTypeComponent},
+  {path: 'stats' , component : DashboardComponent},
   
   // admin views
   {

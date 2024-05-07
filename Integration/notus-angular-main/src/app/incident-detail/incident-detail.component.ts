@@ -45,4 +45,12 @@ export class IncidentDetailComponent implements OnInit {
   
     marker.bindPopup(`<b>Incident is Here</b>`).openPopup();
   }
+
+  locateMe(): void {
+    const latitude = this.incident.latitude;
+    const longitude = this.incident.longitude;
+    const url = `https://www.google.com/maps/dir//${latitude},${longitude}/@${latitude},${longitude},19.5z?entry=ttu`;
+    window.open(url, '_blank');
+    
+  }
 }

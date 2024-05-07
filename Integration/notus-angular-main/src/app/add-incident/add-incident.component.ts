@@ -77,14 +77,24 @@ export class AddIncidentComponent implements OnInit {
   }
 
   addIncidentToService(): void {
+    const confirmed = confirm('Do you want chat with Admin?');
+
     this.incidentService.addIncident(this.incident)
       .subscribe(() => {
-        this.snackBar.open('Incident added successfully!', 'Close', {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: ['bg-green-500', 'text-white']
-        });
-        this.router.navigate(['/incidents']); 
+        if (confirmed) {
+          this.snackBar.open('Incident added successfully!', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['bg-green-500', 'text-white']
+          });
+          this.router.navigate(['/chatRoom']);
+        } else {
+          this.snackBar.open('Incident added successfully!', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['bg-green-500', 'text-white']
+          });
+        }
       });
   }
 }

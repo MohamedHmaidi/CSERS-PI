@@ -82,6 +82,11 @@ export class IncidentListComponent implements OnInit {
     this.router.navigate(['/TypeIncidents']);
   }
 
+
+  navigateToStats() {
+    this.router.navigate(['/stats']);
+  }
+
   openIncidentDetailDialog(incidentId: number): void {
     const dialogRef = this.dialog.open(IncidentDetailComponent, {
       width: '800px',

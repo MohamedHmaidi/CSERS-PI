@@ -11,8 +11,7 @@
 
     .chart-wrapper {
       width: 45%;
-      display: inline-block;
-      margin: 10px;
+      margin: 10px auto; 
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
     }
@@ -25,13 +24,19 @@
   </style>
 </head>
 <body>
+  <app-header-stats></app-header-stats>
+  <app-sidebar></app-sidebar>
   <div class="chart-container">
     <div class="chart-wrapper">
       <canvas id="lineCanvas"></canvas>
     </div>
+  </div>
+
+  <div class="chart-container">
     <div class="chart-wrapper">
       <canvas id="barCanvas"></canvas>
     </div>
   </div>
+  <app-footer-admin></app-footer-admin>
 </body>
 </html>
