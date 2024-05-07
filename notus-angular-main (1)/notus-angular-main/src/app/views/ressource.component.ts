@@ -4,16 +4,15 @@ import { Router } from '@angular/router';
 import { Ressource } from 'src/app/models/Ressource';
 import { HttpErrorResponse } from '@angular/common/http';
 import {  ApexChart, ApexNonAxisChartSeries } from 'chart.js';
+import { Chart } from 'chart.js';
 
-
-
-// export type ChartOptions = {
-//   series: ApexNonAxisChartSeries;
-//   chart: ApexChart;
-//   responsive: any[];
-//   labels: any;
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: any[];
+  labels: any;
   
-// };
+};
 
 
 @Component({
@@ -27,7 +26,7 @@ export class RessourceComponent implements OnInit {
   ressources:Ressource[];
   filteredRessources: Ressource[];
   ressourcesbackup: Ressource[];
-
+  
 
   currentPage: number = 1;
   pageSize: number = 5; 
@@ -40,8 +39,7 @@ export class RessourceComponent implements OnInit {
   [x: string]: any;
 
   hashMapUsedTypeRessource: Map<String, number> = new Map<string, number>();
- // @ViewChild("chartUsedTypeRessource") chart: ChartComponent;
- // public chartOptions: Partial<ChartOptions>;
+  public chartOptions: Partial<ChartOptions>;
 
  constructor(private ressourceService: RessourceService, private router: Router) { 
 
@@ -51,6 +49,7 @@ export class RessourceComponent implements OnInit {
   ngOnInit(): void {
     this.filteredRessources = this.ressources;
     this.ressourcesbackup=this.ressources;
+    this.getStatistics();
     
 
    this.getRessourcesBack();
@@ -91,6 +90,103 @@ export class RessourceComponent implements OnInit {
     })
   }
 
+  ressourcesStatistics = {};
+
+  getStatistics() {
+    this.ressourceService.statisticsUsedTypeRessource().subscribe(data => {
+      const ressStats = {};
+      for (const [key, value] of Object.entries(data)) {
+        ressStats[key.toString()] = value;
+      }
+      this.ressourcesStatistics = ressStats;
+      this.renderTypeChart();
+    });
+  }
+
+  
+  renderTypeChart() {
+    let config = {
+      type: "bar",
+      data: {
+        labels: Object.keys(this.ressourcesStatistics), // Use the classification types as labels
+        datasets: [
+          {
+            label: "Percentage of used resource",
+            backgroundColor: "#e53e3e",
+            borderColor: "#e53e3e",
+            data: Object.values(this.ressourcesStatistics), // Use the counts as data
+            fill: false,
+            barThickness: 8,
+          }
+        ],
+      },
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        title: {
+          display: false,
+          text: "Ressources Chart",
+        },
+        tooltips: {
+          mode: "index",
+          intersect: false,
+        },
+        hover: {
+          mode: "nearest",
+          intersect: true,
+        },
+        legend: {
+          labels: {
+            fontColor: "rgba(0,0,0,.4)",
+          },
+          align: "end",
+          position: "bottom",
+        },
+        scales: {
+          xAxes: [
+            {
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: "Type of resource",
+              },
+              gridLines: {
+                borderDash: [2],
+                borderDashOffset: [2],
+                color: "rgba(33, 37, 41, 0.3)",
+                zeroLineColor: "rgba(33, 37, 41, 0.3)",
+                zeroLineBorderDash: [2],
+                zeroLineBorderDashOffset: [2],
+              },
+            },
+          ],
+          yAxes: [
+            {
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: "Percentage of used resource",
+              },
+              gridLines: {
+                borderDash: [2],
+                drawBorder: false,
+                borderDashOffset: [2],
+                color: "rgba(33, 37, 41, 0.2)",
+                zeroLineColor: "rgba(33, 37, 41, 0.15)",
+                zeroLineBorderDash: [2],
+                zeroLineBorderDashOffset: [2],
+              },
+            },
+          ],
+        },
+      },
+    };
+
+    let ctx: any = document.getElementById("ressources-chart");
+    ctx = ctx.getContext("2d");
+    new Chart(ctx, config);
+  }
+
   private getRessourcesBack() {
     this.ressourceService.getRessourcesBack().subscribe(data => {
       this.ressources = data;
@@ -120,7 +216,7 @@ export class RessourceComponent implements OnInit {
         console.log(response);
         this.getRessourcesBack();
         this.ngOnInit() 
-        alert("wlh tbadlet :)")
+        alert("Ressource modified successfully")
            },
       
     );
@@ -130,60 +226,18 @@ export class RessourceComponent implements OnInit {
   redirectToAddRessource() {
     this.router.navigate(['/add-ressource']); 
   }
-
-  //applyFilters() {
-    //console.log("Applying filters...");
-
-    //this.filteredRessources = this.ressources.filter(ressource =>
-      //ressource.nomRessource.toLowerCase().includes(this.nameFilter.toLowerCase()) &&
-      //ressource.localisation.toLowerCase().includes(this.locationFilter.toLowerCase()) &&
-      //ressource.totalQuantite.toString().includes(this.quantityFilter.toLowerCase()) &&
-      //ressource.typeRessource.toString().includes(this.typeFilter.toLowerCase()) &&
-      //ressource.etatRessource.toString().includes(this.etatFilter.toLowerCase()) 
-
-
-    //);
-    //console.log("Filtered resources:", this.filteredRessources);
-
-  //}
   applyFilters() {
     console.log("Applying filters...");
   
     this.ressources=this.ressourcesbackup;
     this.filteredRessources = this.ressources.filter(ressource =>
       ressource.nomRessource.toLowerCase().includes(this.nameFilter.toLowerCase()) 
-       //&& ressource.localisation.toLowerCase().includes(this.locationFilter.toLowerCase()) 
-       //&&
-      // ressource.totalQuantite.toString().includes(this.quantityFilter.toString().toLowerCase()) &&
-      // ressource.typeRessource.toString().includes(this.typeFilter.toString().toLowerCase()) &&
-      // ressource.etatRessource.toString().includes(this.etatFilter.toString().toLowerCase())
     );
   
     this.ressourcesbackup=this.ressources;
     this.ressources=this.filteredRessources;
     console.log("Filtered resources:", this.filteredRessources);
   }
-
-
-
-   // (response: Ressource) => {
-      //   if (ressource.archive) {
-      //     console.log(response);
-      //     this.toast.success({ detail: 'Success', summary: 'Ressource est archivée !', position: 'topRight', duration: 1000 })
-      //   }
-      //   else {
-      //     console.log(response);
-      //     this.toast.error({ detail: 'Error', summary: 'Ressource est disarchivée !', position: 'topRight', duration: 1000 })
-      //   }
-      //   this.getRessourcesBack();
-      // },
-      // (error: HttpErrorResponse) => {
-      //   //alert(error.message);
-      //   this.toast.error({ detail: 'Error', summary: 'Something wrong !', position: 'topRight', duration: 1000 })
-      // }
-
-  
-
 
   //pagination
   

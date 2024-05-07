@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ReservationService } from './reservation.service';
-import { Reservation } from '../models/reservation';
+import { RessourceService } from '../ressource.service';
+import { Ressource } from '../models/Ressource';
+import { TypeRessource } from '../models/TypeRessource';
 
 @Component({
   selector: 'app-reservation',
@@ -8,23 +9,25 @@ import { Reservation } from '../models/reservation';
   styleUrls: ['./reservation.component.css']
 })
 export class ReservationComponent implements OnInit {
-  reservations: Reservation[];
+  resources: Ressource[];
 
-  constructor(private reservationService: ReservationService) { }
+  constructor(private reservationService: RessourceService) { }
 
   ngOnInit(): void {
-    this.getReservations();
+    this.getRessourcesFromBackend();
   }
 
-  getReservations(): void {
-    this.reservationService.getReservations()
-      .subscribe(reservations => this.reservations = reservations);
+  getRessourcesFromBackend() {
+    this.reservationService.getRessourcesBack().subscribe((data: Ressource[]) => {
+      // Assign the fetched type directly to the typeRessource property of each resource
+      this.resources = data.map(resource => ({
+        ...resource,
+        typeRessource: resource.typeRessource
+      }));
+    });
   }
 
-  modifyReservation(reservation: Reservation): void {
-    this.reservationService.modifyReservation(reservation)
-      .subscribe(updatedReservation => {
-        // Handle the updated reservation if needed
-      });
+  ReserveResource(resource: Ressource) {
+    // Implement reserve logic
   }
 }

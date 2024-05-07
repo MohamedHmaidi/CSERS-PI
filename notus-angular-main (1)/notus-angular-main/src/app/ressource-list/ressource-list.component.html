@@ -1,1 +1,69 @@
-<p>ressource-list works!</p>
+<!-- <p>ressource-list works!</p>
+<div class="flex justify-center items-center bg-gray-200 p-8">
+    <div class="max-w-sm w-full bg-white rounded-lg shadow-md p-8">
+      <form (submit)="addRessource()" class="space-y-6">
+        <div class="flex flex-col space-y-4">
+          <div class="flex flex-col space-y-2">
+            <label for="nomRessource" class="text-gray-700 flex items-center">
+              <i class="fas fa-exclamation-circle text-red-500 mr-2"></i>
+              Name of the Ressource:
+            </label>
+            <input type="text" [(ngModel)]="newRessource.nomRessource" id="nomRessource" name="nomRessource" required
+              class="border border-gray-300 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-500">
+          </div>
+          <div class="flex flex-col space-y-2">
+            <label for="typeRessource" class="text-gray-700 flex items-center">
+              <i class="fas fa-list text-red-500 mr-2"></i>
+              Type of Ressource:
+            </label>
+            <select [(ngModel)]="newRessource.typeRessource" id="typeRessource" name="typeRessource" required
+              class="border border-gray-300 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-500">
+              <option *ngFor="let type of typeRessources" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="flex flex-col space-y-2">
+            <label for="totalQuantite" class="text-gray-700 flex items-center">
+              <i class="fas fa-sort-numeric-up text-red-500 mr-2"></i>
+              Total Quantity:
+            </label>
+            <input type="number" [(ngModel)]="newRessource.totalQuantite" id="totalQuantite" name="totalQuantite" required
+              class="border border-gray-300 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-500">
+          </div>
+          <div class="flex flex-col space-y-2">
+            <label for="etatRessource" class="text-gray-700 flex items-center">
+              <i class="fas fa-wrench text-red-500 mr-2"></i>
+              State of Ressource:
+            </label>
+            <select [(ngModel)]="newRessource.etatRessource" id="etatRessource" name="etatRessource" required
+              class="border border-gray-300 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-500">
+              <option *ngFor="let etat of etatRessources" [value]="etat">{{ etat }}</option>
+            </select>
+          </div>
+          <div class="flex flex-col space-y-2">
+            <label for="reservations" class="text-gray-700 flex items-center">
+              <i class="fas fa-calendar-alt text-red-500 mr-2"></i>
+              Reservations:
+            </label>
+            <textarea [(ngModel)]="newRessource.reservations" id="reservations" name="reservations" required
+              class="border border-gray-300 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-500"></textarea>
+          </div>
+          <div class="flex flex-col space-y-2">
+            <label for="user" class="text-gray-700 flex items-center">
+              <i class="fas fa-user text-red-500 mr-2"></i>
+              User:
+            </label>
+            <input type="text" [(ngModel)]="newRessource.user" id="user" name="user" required
+              class="border border-gray-300 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-500">
+          </div>
+        </div>
+        <br>
+        <div class="flex justify-center">
+          <button type="submit"
+            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:border-red-700">
+            <i class="fas fa-plus-circle mr-2"></i>ADD
+  ```html
+          </button>
+        </div>
+      </form>
+    </div>
+  </div> -->

@@ -27,7 +27,7 @@ public class RessourceServiceImp implements IRessourceService {
     @Autowired
     SendEmailRessourceService sendEmailRessourceService;
     @Override
-  // @Scheduled(cron = "*/60 * * * * *")
+ // @Scheduled(cron = "*/60 * * * * *")
     public List<Ressource> retrieveAllRessources() {
         List<Ressource> allRessources = ressourceRepository.findAll();
         List<Ressource> validRessource = new ArrayList<>();
@@ -40,7 +40,7 @@ public class RessourceServiceImp implements IRessourceService {
                 validRessource.add(re);
 
             } if (re.getTotalQuantite()<2) {
-                sendEmailRessourceService.sendEmail(re.getUser().getEmail(),"RESSOURCE" + re.getNomRessource()+" WILL BE OVER SOON ",
+                sendEmailRessourceService.sendEmail(re.getUser().getEmail(),"RESSOURCE " + re.getNomRessource()+ " WILL BE OVER SOON ",
                         "Dear "+re.getUser().getFirstname()+" "+re.getUser().getLastname()+"\n"+"WE NEED TO UPDATE THE QUANTITY  << "+re.getTotalQuantite()+" >> OF RESSOURCE \n");
 
             }
