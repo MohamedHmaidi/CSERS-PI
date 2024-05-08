@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
@@ -35,7 +35,6 @@ import { AuthComponent } from "./layouts/auth/auth.component";
 import {EquipegetallComponent} from "./views/admin/Equipe/getallequipe.component";
 import {CreateEquipeComponent} from "./views/admin/Equipe/createequipe.component";
 import {UpdateEquipeComponent} from "./views/admin/Equipe/updateequipe.component";
-import {CreateMembreComponent} from "./views/admin/Membre/createmembre.component";
 import {MembregetallComponent} from "./views/admin/Membre/getallmembre.component";
 import {UpdateMembreComponent} from "./views/admin/Membre/updatemembre.component";
 
@@ -74,6 +73,28 @@ import { PassQuizComponent } from './views/pass-quiz/pass-quiz.component';
 import { AddTrainingContentComponent } from './views/add-training-content/add-training-content.component';
 import { QuizStatisticsComponent } from './views/quiz-statistics/quiz-statistics.component';
 
+//achref
+import { AllUserComponent } from "./views/all-user/all-user.component";
+import { RoleGuardService } from "./views/role/role-guard.service";
+import { EditUserComponent } from "./views/edit-user/edit-user.component";
+import { ForgetPasswordComponent } from "./views/forget-password/forget-password.component";
+import { NewPasswordComponent } from './views/new-password/new-password.component';
+import { UserStatComponent } from './views/user-stat/user-stat.component';
+import { VerifyOtpComponent } from './views/verify-otp/verify-otp.component';
+import { LoginComponent } from "./views/login/login.component";
+import { RegisterComponent } from "./views/register/register.component";
+
+//istabrak
+import { RessourceComponent } from "./views/ressource/ressource.component";
+import { AddRessourceComponent } from './views/add-ressource/add-ressource.component';
+import { ReservationComponent } from "./views/Reservation/reservation.component";
+//import { RessourceListComponent } from './ressource-list/ressource-list.component';
+//import { UpdateRessourceComponent } from './update-ressource/update-ressource.component';
+
+// auth views
+//import { LoginComponent } from "./login/login.component";
+//import { RegisterComponent } from "./register/register.component";
+
 
 // admin views
 import { DashboardComponent } from "./views/admin/dashboard/dashboard.component";
@@ -82,8 +103,8 @@ import { SettingsComponent } from "./views/admin/settings/settings.component";
 import { TablesComponent } from "./views/admin/tables/tables.component";
 
 // auth views
-import { LoginComponent } from "./views/auth/login/login.component";
-import { RegisterComponent } from "./views/auth/register/register.component";
+//import { LoginComponent } from "./views/login/login.component";
+//import { RegisterComponent } from "./views/register/register.component";
 
 // no layouts views
 import { IndexComponent } from "./views/index/index.component";
@@ -114,6 +135,8 @@ import { PagesDropdownComponent } from "./components/dropdowns/pages-dropdown/pa
 import { NotificationDropdownComponent } from "./components/dropdowns/notification-dropdown/notification-dropdown.component";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user-dropdown.component";
+import { AuthInterceptorService } from "src/core/service/auth-interceptor.service";
+import { StatTeamComponent } from './views/stat-team/stat-team.component';
 
 
 @NgModule({
@@ -154,7 +177,6 @@ import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user
     ProfileComponent,
     EquipegetallComponent,
     CreateEquipeComponent,
-    CreateMembreComponent,
     MembregetallComponent,
     UpdateEquipeComponent,
     UpdateMembreComponent,
@@ -185,6 +207,22 @@ import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user
     PassQuizComponent,
     AddTrainingContentComponent,
     QuizStatisticsComponent,
+    AllUserComponent,
+    EditUserComponent,
+    ForgetPasswordComponent,
+    RessourceComponent,
+    AddRessourceComponent,
+    ReservationComponent,
+    StatTeamComponent,
+    AllUserComponent,
+    EditUserComponent,
+    ForgetPasswordComponent,
+    VerifyOtpComponent,
+    NewPasswordComponent,
+    UserStatComponent,
+
+
+
 
 
 
@@ -209,7 +247,15 @@ import { UserDropdownComponent } from "./components/dropdowns/user-dropdown/user
    NgxYoutubePlayerModule,
 
   ],
-  providers: [MessagingService,AsyncPipe],
+  providers: [MessagingService,AsyncPipe,
+    
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true 
+    }
+
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Claim, ClaimType } from '../../../../core/models/claim.model';
 import { ClaimService } from '../../../../core/service/claim.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/core/service/AuthenticationService';
 
 @Component({
   selector: 'app-claims-front',
@@ -32,7 +33,7 @@ export class ClaimsFrontComponent implements OnInit {
 
   claims: Claim[] = [];
 
-  constructor(private claimService: ClaimService, private router: Router) { }
+  constructor(private claimService: ClaimService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.getClaims();
@@ -42,8 +43,10 @@ export class ClaimsFrontComponent implements OnInit {
     this.claimService.getClaims().subscribe((data) => {
       this.totalClaims = data.length;
       this.totalPages = Math.ceil(this.totalClaims / this.pageSize);
-      this.filteredClaims = data.filter((claim: any) => claim.user.id_user === 1);
-      this.allClaims = data.filter((claim: any) => claim.user.id_user === 1);
+      this.filteredClaims = data.filter((claim: any) => claim.user.id_user === this.authService.getCurrentUser().userId);
+      this.allClaims = data.filter((claim: any) => claim.user.id_user === this.authService.getCurrentUser().userId);
+      // this.filteredClaims = data;
+      // this.allClaims = data;
       this.filterClaims(); // Apply initial filtering
       this.paginateClaims(); // Paginate the claims
     },

@@ -1,0 +1,6 @@
+export enum EtatRessource{
+    DISPONIBLE="DISPONIBLE",
+    HORS_SERVICE="HORS_SERVICE",
+    NON_DISPONIBLE="NON_DISPONIBLE"
+
+}

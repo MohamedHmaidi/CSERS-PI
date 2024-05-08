@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient , HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from '../service/AuthenticationService';
-import { Incident } from '../models/incident';
-import { TypeIncident } from '../models/type-incident';
+import { Incident } from '../../core/models/incident';
+import { TypeIncident } from '../../core/models/type-incident';
+import { AuthService } from './AuthenticationService';
 
 @Injectable({
   providedIn: 'root'
@@ -13,59 +13,61 @@ export class IncidentService {
   private DeleteUrl = 'http://localhost:8089/csers/incident/remove-incident';
   private UpdateUrl = 'http://localhost:8089/csers/incident/modify-incident';
   private getIncById = 'http://localhost:8089/csers/incident/retrieve-incident/';
-  private addIncidentUrl = 'http://localhost:8089/csers/incident/add-incident';
+  private addIncidentUrl = 'http://localhost:8089/csers/incident/add-incidentrec';
   private typesIncidentUrl = 'http://localhost:8089/csers/incidentType/retrieve-all-incidentsTypes';
   private getTypeIncidentByIdUrl = 'http://localhost:8089/csers/incidentType/retrieve-incidentType/';
   private apiUrl = 'http://localhost:8089/csers/incident/incidents-per-day';
   private typesIncidentCountUrl = 'http://localhost:8089/csers/incident/count-by-type';
+  private userId = 0;
 
-  constructor(private httpClient: HttpClient, private authService: AuthService) { }
+  constructor(private httpClient: HttpClient, private authService:AuthService) { }
 
   getIncidentList(): Observable<Incident[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.httpClient.get<Incident[]>(`${this.BaseUrl}`, { headers });
+    return this.httpClient.get<Incident[]>(`${this.BaseUrl}`);
   }
 
   deleteIncident(incidentId: number): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.httpClient.delete(`${this.DeleteUrl}/${incidentId}`, { headers });
+    return this.httpClient.delete(`${this.DeleteUrl}/${incidentId}`);
   }
 
   updateIncident(incident: Incident): Observable<Incident> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.httpClient.put<Incident>(`${this.UpdateUrl}`, incident, { headers });
+    return this.httpClient.put<Incident>(`${this.UpdateUrl}`, incident);
   }
 
   addIncident(incident: Incident): Observable<Incident> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.httpClient.post<Incident>(this.addIncidentUrl, incident, { headers });
-  }
+    const userId = this.authService.getCurrentUser().userId.toString(); // Convert to string
+    
+    // You can set up headers if needed
+    const headers = new HttpHeaders({
+        'Authorization': 'Bearer ' + this.authService.getCurrentUserToken(),
+        'UserId': userId
+    });
+
+    // Passing options as third parameter
+    const options = { headers: headers };
+
+    return this.httpClient.post<Incident>(this.addIncidentUrl, incident, options);
+}
 
   getTypesIncident(): Observable<TypeIncident[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.httpClient.get<TypeIncident[]>(this.typesIncidentUrl, { headers });
+    return this.httpClient.get<TypeIncident[]>(this.typesIncidentUrl);
   }
 
   getTypeIncidentById(id: number): Observable<TypeIncident> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
     const url = `${this.getTypeIncidentByIdUrl}${id}`;
-    return this.httpClient.get<TypeIncident>(url, { headers }); 
+    return this.httpClient.get<TypeIncident>(url);
   }
-  
+
   getIncidentById(id: number): Observable<Incident> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
     const url = `${this.getIncById}${id}`;
-    return this.httpClient.get<Incident>(url, { headers }); 
+    return this.httpClient.get<Incident>(url);
   }
-  
 
   getIncidentsPerDay(): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.httpClient.get<any>(this.apiUrl , { headers });
+    return this.httpClient.get<any>(this.apiUrl);
   }
 
   getIncidentsByType(): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.httpClient.get<any>(this.typesIncidentCountUrl, { headers });
+    return this.httpClient.get<any>(this.typesIncidentCountUrl);
   }
 }

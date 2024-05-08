@@ -146,8 +146,12 @@ public class MembreController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<MembreDTO> updateMembre(@PathVariable Long id, @RequestBody MembreDTO membreDTO) {
-        MembreDTO updatedMembre = membreService.updateMembre(id, membreDTO);
-        return ResponseEntity.ok(updatedMembre);
+        try {
+            MembreDTO updatedMembre = membreService.updateMembre(id, membreDTO);
+            return ResponseEntity.ok(updatedMembre);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
 

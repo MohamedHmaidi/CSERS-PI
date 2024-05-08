@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-...insert-your-integrity-here..." crossorigin="anonymous" />
-
 <div class="flex flex-wrap mt-4">
   <div class="w-full mb-12 px-4">
     <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded" [ngClass]="color === 'light' ? 'bg-white' : 'bg-red-900 text-white'">
@@ -39,7 +37,7 @@
                        (mouseleave)="toggleTooltip(i)"
                        class="membre-container">
                     <img [src]="membre" class="membre-image w-10 h-10 rounded-full border-2 border-blueGray-50 shadow">
-                    <div class="tooltip">{{ membre.nom }} {{ membre.prenom }} - {{ membre.poste }}</div>
+                    <div class="tooltip"> {{ membre.firstname}}{{ membre.poste }}</div>
                   </div>
                 </div>
               </td>

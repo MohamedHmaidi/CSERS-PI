@@ -76,7 +76,7 @@ export class ClaimStatsBackComponent implements OnInit {
         },
         legend: {
           labels: {
-            fontColor: "rgba(0,0,0,.4)",
+            fontColor: "rgba(0,0,0,)",
           },
           align: "end",
           position: "bottom",
@@ -111,8 +111,8 @@ export class ClaimStatsBackComponent implements OnInit {
                 drawBorder: false,
                 borderDashOffset: [2],
                 color: "rgba(33, 37, 41, 0.2)",
-                zeroLineColor: "rgba(33, 37, 41, 0.15)",
-                zeroLineBorderDash: [2],
+                zeroLineColor: "rgba(37, 37, 41, 0.15)",
+                zeroLineBorderDash: [3],
                 zeroLineBorderDashOffset: [2],
               },
             },
@@ -154,7 +154,7 @@ export class ClaimStatsBackComponent implements OnInit {
     };
   
     let ctx: any = document.getElementById("claim-class-chart");
-    ctx = ctx.getContext("2d");
+    ctx = ctx.getContext("3d");
     new Chart(ctx, config);
   }
 

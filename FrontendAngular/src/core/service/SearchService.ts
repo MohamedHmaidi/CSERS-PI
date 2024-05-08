@@ -13,7 +13,7 @@ import { AuthService } from '../service/AuthenticationService';
     constructor(private http: HttpClient, private authService: AuthService) { }
   
     search(query: any): Observable<any> {
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
+
       let params = new HttpParams();
       if (query.poste) {
         params = params.set('poste', query.poste);
@@ -25,7 +25,7 @@ import { AuthService } from '../service/AuthenticationService';
         params = params.set('certifications', query.certifications);
       }
   
-      const options = { params, headers };
+      const options = { params };
   
       return this.http.get<any[]>(this.apiUrl, options);
     }

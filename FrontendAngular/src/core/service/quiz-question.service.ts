@@ -11,27 +11,27 @@ export class QuizQuestionService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getQuestionsByQuizId(quizId: number): Observable<QuizQuestion[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<QuizQuestion[]>(`${this.backendUrl}/quizzes/${quizId}/questions`, { headers });
+
+    return this.http.get<QuizQuestion[]>(`${this.backendUrl}/quizzes/${quizId}/questions`);
   }
 
   getQuestionById(quizId: number, questionId: number): Observable<QuizQuestion> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<QuizQuestion>(`${this.backendUrl}/quizzes/${quizId}/questions/${questionId}`, { headers });
+
+    return this.http.get<QuizQuestion>(`${this.backendUrl}/quizzes/${quizId}/questions/${questionId}`);
   }
 
   createQuestion(quizId: number, newQuestion: QuizQuestion): Observable<QuizQuestion> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.post<QuizQuestion>(`${this.backendUrl}/quizzes/${quizId}/questions`, newQuestion, { headers });
+
+    return this.http.post<QuizQuestion>(`${this.backendUrl}/quizzes/${quizId}/questions`, newQuestion);
   }
 
   updateQuestion(quizId: number, questionId: number, updatedQuestion: QuizQuestion): Observable<QuizQuestion> { 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.put<QuizQuestion>(`${this.backendUrl}/quizzes/${quizId}/questions/${questionId}`, updatedQuestion, { headers });
+
+    return this.http.put<QuizQuestion>(`${this.backendUrl}/quizzes/${quizId}/questions/${questionId}`, updatedQuestion);
   }
 
   deleteQuestion(quizId: number, questionId: number): Observable<void> { 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.delete<void>(`${this.backendUrl}/quizzes/${quizId}/questions/${questionId}`, { headers });
+
+    return this.http.delete<void>(`${this.backendUrl}/quizzes/${quizId}/questions/${questionId}`);
   }
 }

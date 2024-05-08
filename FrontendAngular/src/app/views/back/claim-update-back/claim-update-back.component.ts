@@ -26,7 +26,7 @@ export class ClaimUpdateBackComponent implements OnInit {
   }
 
   navigateBackToClaim(): void {
-    this.router.navigate(['admin/claims/claim-info', this.claimId]);
+    this.router.navigate(['/claims/claim-info', this.claimId]);
   }
 
   updateClaim(){

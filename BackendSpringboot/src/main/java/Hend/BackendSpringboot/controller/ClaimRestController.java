@@ -46,8 +46,13 @@ public class ClaimRestController {
     }
 
 
+
+
     @PutMapping("/modify-claim")
     public Claim modifyClaim(@RequestBody Claim c) {
+       // System.out.println(c.getTitle());
+        Claim sk = claimService.retrieveClaim(c.getIdClaim());
+        c.setUser(sk.getUser());
         Claim claim = claimService.modifyClaim(c);
         return claim;
     }

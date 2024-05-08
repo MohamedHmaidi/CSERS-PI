@@ -17,6 +17,8 @@ public interface MembreRepository extends JpaRepository<Membre, Long>, JpaSpecif
             "FROM User u INNER JOIN Membre m ON u.id_user = m.user.id_user")
     List<Object[]> findAllMembreDetails();
 
+    @Query("SELECT m FROM Membre m JOIN m.user u WHERE u.role = 'STAFF'")
+    List<Membre> findStaffMembers();
 
     List<Membre> findByEquipeIntervention_IdEquipe(Long equipeInterventionId);
 

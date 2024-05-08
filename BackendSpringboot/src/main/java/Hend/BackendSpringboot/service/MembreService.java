@@ -7,6 +7,7 @@ import Hend.BackendSpringboot.entity.MembreSpecification;
 import Hend.BackendSpringboot.entity.User;
 import Hend.BackendSpringboot.repository.EquipeInterventionRepository;
 import Hend.BackendSpringboot.repository.MembreRepository;
+import Hend.BackendSpringboot.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,13 +24,14 @@ public class MembreService {
 
     private final MembreRepository membreRepository;
     private final EquipeInterventionRepository equipeInterventionRepository;
-
+    private final UserRepository userRepository;
     private final Map<String, List<String>> postToTeamsMapping = new HashMap<>();
 
     @Autowired
-    public MembreService(MembreRepository membreRepository, EquipeInterventionRepository equipeInterventionRepository) {
+    public MembreService(MembreRepository membreRepository, EquipeInterventionRepository equipeInterventionRepository, UserRepository userRepository) {
         this.membreRepository = membreRepository;
         this.equipeInterventionRepository = equipeInterventionRepository;
+        this.userRepository = userRepository;
         initializePostToTeamsMapping();
     }
     // Method to initialize the mapping between post names and recommended teams
@@ -52,11 +54,66 @@ public class MembreService {
         return postToTeamsMapping.getOrDefault(postName, Collections.emptyList());
     }
 
+
+
+    public MembreDTO updateMembre(Long id, MembreDTO membreDTO) {
+        // Retrieve the existing member entity from the database
+        Optional<Membre> optionalMembre = membreRepository.findById(id);
+        if (optionalMembre.isPresent()) {
+            Membre existingMembre = optionalMembre.get();
+
+            // Update the member's attributes
+            existingMembre.setPoste(membreDTO.getPoste());
+            existingMembre.setNumber(membreDTO.getNumber());
+            existingMembre.setCompetencesTechniques(membreDTO.getCompetencesTechniques());
+            existingMembre.setCertifications(membreDTO.getCertifications());
+            existingMembre.setExperience(membreDTO.getExperience());
+
+            // Save the updated member
+            Membre updatedMembre = membreRepository.save(existingMembre);
+
+            // Convert the updated member entity to DTO and return
+            return convertToDTO(updatedMembre);
+        } else {
+            throw new RuntimeException("Membre not found with ID: " + id);
+        }
+    }
+
     public List<MembreDTO> getAllMembres() {
         List<Membre> membres = membreRepository.findAll();
         return membres.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+
+
+    public List<MembreDTO> getAllStaffMembers() {
+        List<Membre> staffMembers = membreRepository.findStaffMembers();
+        return staffMembers.stream()
+                .map(this::convertToDTOWithUserDetails)
+                .collect(Collectors.toList());
+    }
+
+    private MembreDTO convertToDTOWithUserDetails(Membre membre) {
+        MembreDTO dto = convertToDTO(membre);
+        User user = membre.getUser();
+        if (user != null) {
+            dto.setFirstname(user.getFirstname());
+            dto.setLastname(user.getLastname());
+            dto.setEmail(user.getEmail());
+        }
+        return dto;
+    }
+
+    private MembreDTO convertUserToMembreDTO(User user) {
+        MembreDTO dto = new MembreDTO();
+        // Assuming other attributes of MembreDTO are set accordingly
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
+        dto.setEmail(user.getEmail());
+        // Set other attributes of MembreDTO as needed
+        return dto;
     }
 
     public List<Membre> findAllMembres(String poste, String competencesTechniques, String certifications) {
@@ -161,24 +218,7 @@ public class MembreService {
 
 
 
-    public MembreDTO updateMembre(Long id, MembreDTO membreDTO) {
-        Optional<Membre> optionalMembre = membreRepository.findById(id);
-        if (optionalMembre.isPresent()) {
-            Membre existingMembre = optionalMembre.get();
 
-            // Update the equipeInterventionId if provided
-            if (membreDTO.getEquipeInterventionId() != null) {
-                EquipeIntervention equipeIntervention = equipeInterventionRepository.findById(membreDTO.getEquipeInterventionId())
-                        .orElseThrow(() -> new IllegalArgumentException("EquipeIntervention with ID " + membreDTO.getEquipeInterventionId() + " not found"));
-                existingMembre.setEquipeIntervention(equipeIntervention);
-            }
-
-            // Save the updated Membre
-            Membre updatedMembre = membreRepository.save(existingMembre);
-            return convertToDTO(updatedMembre);
-        }
-        throw new RuntimeException("Membre not found with ID: " + id);
-    }
 
     public void updateMembreEquipe(Long memberId, String equipeName) {
         Optional<Membre> optionalMembre = membreRepository.findById(memberId);

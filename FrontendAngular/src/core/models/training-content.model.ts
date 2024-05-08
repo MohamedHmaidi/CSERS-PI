@@ -9,7 +9,6 @@ export interface TrainingContent {
     createdDate: Date; 
     completed: boolean;  
     estimatedTime: number; 
-    content: any;
     contentUrl: string; 
     videoDuration: number; 
 }

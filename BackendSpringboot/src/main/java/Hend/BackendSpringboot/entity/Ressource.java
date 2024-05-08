@@ -1,10 +1,18 @@
 package Hend.BackendSpringboot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.util.List;
 
 @Entity
 @Table(name = "ressource")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Ressource {
 
     @Id
@@ -15,69 +23,33 @@ public class Ressource {
     @Column(name = "nom_ressource")
     private String nomRessource;
 
-    @Column(name = "type_ressource")
-    private String typeRessource;
+    @Enumerated(EnumType.STRING)
+    private TypeRessource typeRessource;
+
+    @Column(name = "archive")
+    private boolean archive;
 
     @Column(name = "localisation")
     private String localisation;
 
-    @Column(name = "disponibilite")
-    private boolean disponibilite;
+   // @Column(name = "disponibilite")
+    //private boolean disponibilite;
 
     @Column(name = "total_quantite")
     private int totalQuantite;
 
+
     @OneToMany(mappedBy = "ressource", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Reservation> reservations;
 
-    // Getters and setters
-    public Long getIdRessource() {
-        return idRessource;
-    }
+    @Enumerated(EnumType.STRING)
+    private etatRessource etatRessource;
 
-    public void setIdRessource(Long idRessource) {
-        this.idRessource = idRessource;
-    }
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User user;
 
-    public String getNomRessource() {
-        return nomRessource;
-    }
 
-    public void setNomRessource(String nomRessource) {
-        this.nomRessource = nomRessource;
-    }
 
-    public String getTypeRessource() {
-        return typeRessource;
-    }
-
-    public void setTypeRessource(String typeRessource) {
-        this.typeRessource = typeRessource;
-    }
-
-    public String getLocalisation() {
-        return localisation;
-    }
-
-    public void setLocalisation(String localisation) {
-        this.localisation = localisation;
-    }
-
-    public boolean isDisponibilite() {
-        return disponibilite;
-    }
-
-    public void setDisponibilite(boolean disponibilite) {
-        this.disponibilite = disponibilite;
-    }
-
-    public int getTotalQuantite() {
-        return totalQuantite;
-    }
-
-    public void setTotalQuantite(int totalQuantite) {
-        this.totalQuantite = totalQuantite;
-    }
-
-    // Other getters and setters for the list of reservations
 }
+

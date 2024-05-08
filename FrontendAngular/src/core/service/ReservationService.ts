@@ -15,7 +15,7 @@ export class EquipeStatsService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getEquipeStats(year: number, month: number): Observable<EquipeStats[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<EquipeStats[]>(`${this.apiUrl}?year=${year}&month=${month}`, { headers });
+
+    return this.http.get<EquipeStats[]>(`${this.apiUrl}?year=${year}&month=${month}`);
   }
 }

@@ -14,58 +14,58 @@ export class ClaimService {
 
   // Fetch all claims from the backend
   getClaims(): Observable<Claim[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<Claim[]>(`${this.apiUrl}/retrieve-all-claims`, { headers });
+    
+    return this.http.get<Claim[]>(`${this.apiUrl}/retrieve-all-claims` );
   }
 
   // Add a new claim
   addClaim(claim: Claim): Observable<Claim> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    claim.user = {id_user: 1};
+    claim.user = {id_user: this.authService.getCurrentUser().userId};
     claim.date = new Date();
     claim.status = "PENDING";
-    return this.http.post<Claim>(`${this.apiUrl}/add-claim`, claim,  { headers });
+    return this.http.post<Claim>(`${this.apiUrl}/add-claim`, claim );
   }
 
   // Retrieve a single claim by ID
   getClaimById(claimId: number): Observable<Claim> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<Claim>(`${this.apiUrl}/retrieve-claim/${claimId}`,  { headers });
+   
+    return this.http.get<Claim>(`${this.apiUrl}/retrieve-claim/${claimId}`  );
   }
 
   // Update an existing claim
   updateClaim(claim: Claim): Observable<Claim> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.put<Claim>(`${this.apiUrl}/modify-claim`, claim,  { headers });
+    claim.user= null;
+    return this.http.put<Claim>(`${this.apiUrl}/modify-claim`, claim );
+
   }
 
   // Delete a claim by ID
   deleteClaim(claimId: number): Observable<void> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.delete<void>(`${this.apiUrl}/remove-claim/${claimId}`,  { headers });
+   
+    return this.http.delete<void>(`${this.apiUrl}/remove-claim/${claimId}`);
   }
 
   // Correct claim spelling
   correctClaim(claimId: number): Observable<string> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get(`${this.apiUrl}/correct-claim/${claimId}`, { responseType: 'text' , headers});
+
+    return this.http.get(`{this.apiUrl}/correct-claim/${claimId}`, { responseType: 'text' });
   }
 
   // Search claims based on the provided query
   searchClaims(query: string): Observable<Claim[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<Claim[]>(`${this.apiUrl}/search-claims/${query}`,  { headers });
+
+    return this.http.get<Claim[]>(`${this.apiUrl}/search-claims/${query}`);
   }
 
   // Fetch claim type statistics
   getClaimTypeStatistics(): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<any>(`${this.apiUrl}/claim-type-statistics`,  { headers });
+
+    return this.http.get<any>(`${this.apiUrl}/claim-type-statistics`);
   }
 
   // Fetch claim class statistics
   getClaimClassStatistics(): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<any>(`${this.apiUrl}/claim-class-statistics`,  { headers });
+   
+    return this.http.get<any>(`${this.apiUrl}/claim-class-statistics`);
   }
 }

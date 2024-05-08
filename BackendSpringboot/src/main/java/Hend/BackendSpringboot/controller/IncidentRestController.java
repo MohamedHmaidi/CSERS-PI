@@ -1,9 +1,12 @@
 package Hend.BackendSpringboot.controller;
 
 import Hend.BackendSpringboot.entity.ChatMessage;
+import Hend.BackendSpringboot.entity.EquipeIntervention;
 import Hend.BackendSpringboot.entity.Incident;
 import Hend.BackendSpringboot.service.ChatMessageService;
+import Hend.BackendSpringboot.service.EquipeInterventionService;
 import Hend.BackendSpringboot.service.IIncidentService;
+import Hend.BackendSpringboot.service.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +20,25 @@ import java.util.Map;
 @RequestMapping("/incident")
 public class IncidentRestController {
     IIncidentService incidentService;
+    private final EquipeInterventionService equipeInterventionService;
 
     private final ChatMessageService chatMessageService;
+
+    private final IUserService userService;
+
+    @PostMapping("/add-incidentrec")
+    public Incident addIncidentt(@RequestBody Incident i, @RequestHeader("UserId") Integer userId) {
+
+        // Recommend teams based on incident description
+        List<EquipeIntervention> recommendedTeams = equipeInterventionService.recommendTeamsForIncident(i.getDescription());
+i.setUser(userService.getUserById(userId));
+        // Set recommended teams to the incident
+        i.setEquipesIntervention(recommendedTeams);
+
+        Incident incident = incidentService.addIncident(i);
+        return incident;
+    }
+
 
     // http://localhost:8089/csers/incident/add-incident
     @PostMapping("/add-incident")

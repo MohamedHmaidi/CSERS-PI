@@ -1,0 +1,35 @@
+<app-sidebar></app-sidebar>
+<div style="display: flex; justify-content: center; align-items: center; padding: 20px;">
+  <div style="max-width: 800px; font-family: 'Arial', sans-serif;">
+    <!-- Big title -->
+    <h1 style="font-size: 2rem; font-weight: bold; color: #333; text-align: center; margin-bottom: 30px;">Resources Disponibles</h1>
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+      <ng-container *ngFor="let resource of resources">
+        <ng-container *ngIf="!resource.archive">
+          <div style="width: calc(33.33% - 20px); max-width: calc(33.33% - 20px); box-sizing: border-box; text-align: center;">
+            <div style="border: 1px solid #ccc; border-radius: 10px; overflow: hidden; background-color: #f8f9fa; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+              <div style="padding: 20px;">
+                <div style="display: flex; justify-content: center; margin-bottom: 10px;">
+                  <img src="https://cdn-icons-png.flaticon.com/512/883/883356.png" alt="Resource Icon" style="width: 50px; height: 50px;">
+                </div>
+                <h3 style="margin: 0; font-size: 1.7rem; color: #333; font-weight: bold; margin-bottom: 10px;">{{ resource.nomRessource }}</h3>
+                <p style="margin: 0; font-size: 1.2rem; color: #555; font-weight: bold; margin-bottom: 5px;">Localisation</p>
+                <p style="margin: 0; font-size: 1.4rem; color: #555; margin-bottom: 10px;">{{ resource.localisation }}</p>
+                <p style="margin: 0; font-size: 1.2rem; color: #555; font-weight: bold; margin-bottom: 5px;">Quantité</p>
+                <p style="margin: 0; font-size: 1.4rem; color: #555; margin-bottom: 10px;">{{ resource.totalQuantite }}</p>
+                <p style="margin: 0; font-size: 1.2rem; color: #555; font-weight: bold; margin-bottom: 5px;">Type de ressource</p>
+                <p style="margin: 0; font-size: 1.4rem; color: #555; margin-bottom: 20px;">{{ resource.typeRessource }}</p>
+                <div style="display: flex; justify-content: center;">
+                  <button style="padding: 10px 20px; font-size: 1.2rem; border: none; border-radius: 6px; background-color: #ff0000; color: #fff; cursor: pointer; transition: background-color 0.3s;">
+                    <span style="margin-right: 5px;">Reserve</span>
+                    <i class="fas fa-calendar-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>

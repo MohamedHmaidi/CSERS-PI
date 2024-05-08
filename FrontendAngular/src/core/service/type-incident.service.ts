@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from '../service/AuthenticationService';
+import { HttpClient } from '@angular/common/http';
 import { TypeIncident } from '../models/type-incident';
 import { Observable } from 'rxjs';
 @Injectable({
@@ -11,20 +10,17 @@ export class TypeIncidentService {
   ListUrl="http://localhost:8089/csers/incidentType/retrieve-all-incidentsTypes"
   DeleteUrl="http://localhost:8089/csers/incidentType/remove-incidentType"
   addTypeUrl="http://localhost:8089/csers/incidentType/add-incidentType"
-  constructor(private httpClient: HttpClient, private authService: AuthService) { }
+  constructor(private httpClient: HttpClient) { }
 
   getTypeIncidentList(): Observable<TypeIncident[]>{
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.httpClient.get<TypeIncident[]>(`${this.ListUrl}`, { headers })}
+    return this.httpClient.get<TypeIncident[]>(`${this.ListUrl}`)}
   
   deleteTypeIncident(TypeincidentId: number): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.httpClient.delete(`${this.DeleteUrl}/${TypeincidentId}`, { headers });
+    return this.httpClient.delete(`${this.DeleteUrl}/${TypeincidentId}`);
   }
 
   addTypeIncident(Typeincident: TypeIncident): Observable<TypeIncident> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.httpClient.post<TypeIncident>(this.addTypeUrl, Typeincident, { headers });
+    return this.httpClient.post<TypeIncident>(this.addTypeUrl, Typeincident);
   }
 
 }

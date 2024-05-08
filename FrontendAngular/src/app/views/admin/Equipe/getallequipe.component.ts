@@ -82,10 +82,12 @@ export class EquipegetallComponent implements OnInit {
       this.router.navigate(['/admin/updateequipe', equipeId]);
     }
   
+
   fetchMembersForEquipes() {
     this.equipes.forEach(equipe => {
       this.equipeService.getMemberImagesByEquipeId(equipe.idEquipe).subscribe(images => {
         equipe.membres = images.map(image => this.convertBase64ToImageUrl(image));
+        this.fetchMemberss(equipe.idEquipe);
       });
     });
   }
@@ -93,6 +95,19 @@ export class EquipegetallComponent implements OnInit {
   convertBase64ToImageUrl(base64String: string): SafeUrl {
     const imageUrl = 'data:image/png;base64,' + base64String;
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+  }
+
+  fetchMemberss(equipeId: number) {
+    this.membreService.getMembersByEquipeId(equipeId).subscribe(membres => {
+      const equipe = this.equipes.find(e => e.idEquipe === equipeId);
+      if (equipe) {
+        // Merge member data with existing member images
+        equipe.membres.forEach((membre, index) => {
+          membre.poste = membres[index].poste;
+          membre.firstname = membres[index].firstname;
+        });
+      }
+    });
   }
 
   fetchMembers() {
@@ -116,16 +131,30 @@ export class EquipegetallComponent implements OnInit {
 
   toggleTooltip(index: number) {
     if (!this.membreImages) return; 
-    
+  
     const images = this.membreImages.nativeElement.querySelectorAll('.membre-image');
-    images.forEach((image, i) => {
-      if (i === index) {
-        image.classList.add('show-tooltip');
-      } else {
-        image.classList.remove('show-tooltip');
-      }
-    });
+    const membres = this.equipes[this.currentPage - 1].membres as Membre[]; // Type assertion
+  
+    if (index < membres.length) {
+      const tooltipText = membres[index].poste;
+      console.log('Tooltip Text:', tooltipText); // Log the tooltip text
+  
+      images.forEach((image, i) => {
+        console.log('Index:', i); // Log the index
+        console.log('Current Image:', image); // Log the current image element
+        console.log('Current Member:', membres[i]); // Log the current member object
+        
+        if (i === index) {
+          image.classList.add('show-tooltip');
+          image.setAttribute('title', tooltipText); // Set the tooltip content
+        } else {
+          image.classList.remove('show-tooltip');
+          image.removeAttribute('title'); // Remove the tooltip content
+        }
+      });
+    }
   }
+  
 
   closeAlert(): void {
     this.showAlert = false; 

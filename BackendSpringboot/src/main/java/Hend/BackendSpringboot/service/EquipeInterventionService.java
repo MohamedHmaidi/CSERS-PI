@@ -4,26 +4,74 @@ import Hend.BackendSpringboot.DTOs.EquipeInterventionDTO;
 import Hend.BackendSpringboot.entity.EquipeIntervention;
 import Hend.BackendSpringboot.entity.Membre;
 import Hend.BackendSpringboot.repository.EquipeInterventionRepository;
+import Hend.BackendSpringboot.repository.IncidentRepository;
 import Hend.BackendSpringboot.repository.MembreRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 public class EquipeInterventionService {
 
     private final EquipeInterventionRepository equipeInterventionRepository;
+    private final IncidentRepository incidentRepository;
+
+    private final MembreRepository membreRepository;
+
+    private final Map<String, List<String>> descriptionToTeamsMapping;
 
     @Autowired
-    private MembreRepository membreRepository;
-
-    @Autowired
-    public EquipeInterventionService(EquipeInterventionRepository equipeInterventionRepository) {
+    public EquipeInterventionService(EquipeInterventionRepository equipeInterventionRepository, IncidentRepository incidentRepository, MembreRepository membreRepository) {
         this.equipeInterventionRepository = equipeInterventionRepository;
+        this.incidentRepository = incidentRepository;
+        this.membreRepository = membreRepository;
+        this.descriptionToTeamsMapping = initializeDescriptionToTeamsMapping();
+    }
+
+    private Map<String, List<String>> initializeDescriptionToTeamsMapping() {
+        Map<String, List<String>> descriptionToTeamsMapping = new HashMap<>();
+
+        descriptionToTeamsMapping.put("combustion", List.of("Fire Response Team", "Disaster Management Team"));
+        descriptionToTeamsMapping.put("burning", List.of("Fire Response Team", "Disaster Management Team"));
+        descriptionToTeamsMapping.put("smoke", List.of("Fire Response Team", "Disaster Management Team"));
+        descriptionToTeamsMapping.put("flames", List.of("Fire Response Team", "Disaster Management Team"));
+        descriptionToTeamsMapping.put("heat", List.of("Fire Response Team", "Disaster Management Team"));
+        descriptionToTeamsMapping.put("pain", List.of("Medical Staff Team", "Health and Medical Services Team"));
+        descriptionToTeamsMapping.put("injury", List.of("Medical Staff Team", "Health and Medical Services Team"));
+        descriptionToTeamsMapping.put("trauma", List.of("Medical Staff Team", "Health and Medical Services Team"));
+        descriptionToTeamsMapping.put("blood", List.of("Medical Staff Team", "Health and Medical Services Team"));
+        descriptionToTeamsMapping.put("wound", List.of("Medical Staff Team", "Health and Medical Services Team"));
+        descriptionToTeamsMapping.put("emergency", List.of("Medical Staff Team", "Health and Medical Services Team"));
+        descriptionToTeamsMapping.put("medical attention", List.of("Medical Staff Team", "Health and Medical Services Team"));
+        descriptionToTeamsMapping.put("danger", List.of("Security Team", "Safety Team"));
+        descriptionToTeamsMapping.put("threat", List.of("Security Team", "Safety Team"));
+        descriptionToTeamsMapping.put("security", List.of("Security Team", "Safety Team"));
+        descriptionToTeamsMapping.put("suspicious", List.of("Security Team", "Safety Team"));
+        descriptionToTeamsMapping.put("trespass", List.of("Security Team", "Safety Team"));
+        descriptionToTeamsMapping.put("safety concern", List.of("Security Team", "Safety Team"));
+
+        return descriptionToTeamsMapping;
+    }
+
+    public List<EquipeIntervention> recommendTeamsForIncident(String description) {
+        List<EquipeIntervention> recommendedTeams = new ArrayList<>();
+        for (Map.Entry<String, List<String>> entry : descriptionToTeamsMapping.entrySet()) {
+            String keyword = entry.getKey();
+            if (description.toLowerCase().contains(keyword)) {
+                List<String> teamNames = entry.getValue();
+                for (String teamName : teamNames) {
+                    EquipeIntervention equipe = equipeInterventionRepository.findByNomEquipe(teamName);
+                    if (equipe != null) {
+                        recommendedTeams.add(equipe);
+                    }
+                }
+            }
+        }
+        return recommendedTeams;
     }
 
     public List<EquipeInterventionDTO> getAllEquipes() {

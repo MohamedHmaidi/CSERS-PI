@@ -1,32 +1,23 @@
 // ressource.model.ts
 
-import { reservation } from './Reservation'; // Assurez-vous d'avoir une classe Reservation correspondante
+import { Reservation } from './Reservation'; 
+import { EtatRessource } from './EtatRessource';
+import { TypeRessource } from './TypeRessource';
+import { User } from './user';
 
 export class Ressource {
   idRessource: number;
   nomRessource: string;
-  typeRessource: string;
+  //typeRessource: string;
+  typeRessource: TypeRessource[];
   localisation: string;
   disponibilite: boolean;
   totalQuantite: number;
-  reservations: reservation[];
+  reservations: Reservation[];
+  archive:boolean;
+  etatRessource : EtatRessource[];
+  user: User;
 
-  constructor(
-    idRessource: number,
-    nomRessource: string,
-    typeRessource: string,
-    localisation: string,
-    disponibilite: boolean,
-    totalQuantite: number,
-    reservations: reservation[]
-  ) {
-    this.idRessource = idRessource;
-    this.nomRessource = nomRessource;
-    this.typeRessource = typeRessource;
-    this.localisation = localisation;
-    this.disponibilite = disponibilite;
-    this.totalQuantite = totalQuantite;
-    this.reservations = reservations;
-  }
+ 
 }
 

@@ -4,7 +4,7 @@ import { IncidentService } from '../../../core/service/incident.service';
 import { MatSnackBar } from '@angular/material/snack-bar'; 
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { UpdateIncidentComponent } from '../update-incident/update-incident.component';
+import { UpdateIncidentComponent } from '../../views/update-incident/update-incident.component';
 import { IncidentDetailComponent } from '../incident-detail/incident-detail.component';
 
 @Component({
@@ -30,6 +30,7 @@ export class IncidentListComponent implements OnInit {
 
   private getIncidents() {
     this.incidentService.getIncidentList().subscribe(data => {
+      
       this.incidents = data;
     });
   }
@@ -80,6 +81,11 @@ export class IncidentListComponent implements OnInit {
 
   navigateToTypeIncidents() {
     this.router.navigate(['/TypeIncidents']);
+  }
+
+
+  navigateToStats() {
+    this.router.navigate(['/stats']);
   }
 
   openIncidentDetailDialog(incidentId: number): void {

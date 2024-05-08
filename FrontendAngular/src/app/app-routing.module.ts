@@ -6,9 +6,10 @@ import { Routes, RouterModule } from "@angular/router";
 import { EquipegetallComponent } from "./views/admin/Equipe/getallequipe.component";
 import { CreateEquipeComponent } from "./views/admin/Equipe/createequipe.component";
 import {UpdateEquipeComponent} from "./views/admin/Equipe/updateequipe.component";
-import { CreateMembreComponent } from "./views/admin/Membre/createmembre.component";
 import { MembregetallComponent } from "./views/admin/Membre/getallmembre.component";
 import {UpdateMembreComponent} from "./views/admin/Membre/updatemembre.component";
+
+import { StatTeamComponent } from "./views/stat-team/stat-team.component";
 
 
 //mohamed
@@ -18,6 +19,8 @@ import { AddIncidentComponent } from './views/add-incident/add-incident.componen
 import { TypeIncidentListComponent } from "./views//type-incident-list/type-incident-list.component";
 import { AddIncidentTypeComponent } from "./views//add-incident-type/add-incident-type.component";
 import { ChatComponent } from "./views//chat/chat.component";
+import { DashboardComponent } from "./views/dashboard/dashboard.component";
+
 
 //aymen
 import { ClaimsFrontComponent } from "./views/front/claims-front/claims-front.component";
@@ -40,20 +43,33 @@ import { PassQuizComponent } from './views/pass-quiz/pass-quiz.component';
 import { AddTrainingContentComponent } from './views/add-training-content/add-training-content.component';
 import { QuizStatisticsComponent } from './views/quiz-statistics/quiz-statistics.component';
 
+//achref
+import { AllUserComponent } from "./views/all-user/all-user.component";
+import { RoleGuardService } from "./views/role/role-guard.service";
+import { EditUserComponent } from "./views/edit-user/edit-user.component";
+import { ForgetPasswordComponent } from "./views/forget-password/forget-password.component";
+import { LoginComponent } from "./views/login/login.component";
+import { RegisterComponent } from "./views/register/register.component";
+import { NewPasswordComponent } from './views/new-password/new-password.component';
+import { UserStatComponent } from './views/user-stat/user-stat.component';
+import { VerifyOtpComponent } from './views/verify-otp/verify-otp.component';
+
+//istabrak
+import { RessourceComponent } from "./views/ressource/ressource.component";
+import { AddRessourceComponent } from './views/add-ressource/add-ressource.component';
+import { ReservationComponent } from "./views/Reservation/reservation.component";
 
 // layouts
 import { AdminComponent } from "./layouts/admin/admin.component";
 import { AuthComponent } from "./layouts/auth/auth.component";
 
 // admin views
-import { DashboardComponent } from "./views/admin/dashboard/dashboard.component";
+
 import { MapsComponent } from "./views/admin/maps/maps.component";
 import { SettingsComponent } from "./views/admin/settings/settings.component";
 import { TablesComponent } from "./views/admin/tables/tables.component";
 
-// auth views
-import { LoginComponent } from "./views/auth/login/login.component";
-import { RegisterComponent } from "./views/auth/register/register.component";
+
 
 // no layouts views
 import { IndexComponent } from "./views/index/index.component";
@@ -80,30 +96,45 @@ const routes: Routes = [
   { path: 'addtrainingcontent', component: AddTrainingContentComponent },
   { path: 'available-quizzes', component: AvailableQuizzesComponent },
   { path: 'available-quizzes/:id', component: PassQuizComponent },
+  {path:"stats", component:DashboardComponent},
+{path :"statTeam",component:StatTeamComponent}  ,
+  //{ path: "listequipe", component: EquipegetallComponent },
+     // { path: "addequipe", component: CreateEquipeComponent },
+     // { path: "updateequipe/:id", component: UpdateEquipeComponent },
+     // { path: "updatemembre/:id", component: UpdateMembreComponent },
+      //{ path: "addmembre", component: CreateMembreComponent },
+     // { path: "listemembre", component: MembregetallComponent },
+     { path: "ressource", component: RessourceComponent },
+  {path: 'add-ressource', component: AddRessourceComponent} ,
+  //{path: 'app-reservation', component: ReservationComponent} ,
+      { path: "maps", component: IncidentListComponent },
+      { path: "admin/claims/claims-back", component: ClaimsBackComponent },
+      { path: "admin/claims/claim-info/:id", component: ClaimInfoBackComponent },
+      { path: "admin/claims/claim-create", component: ClaimCreateBackComponent },
+      { path: "admin/claims/claim-update/:id", component: ClaimUpdateBackComponent },
+      { path: "admin/claims/claims-stats", component: ClaimStatsBackComponent },
+      { path: "admin/claims/claims-stats", component: ClaimStatsBackComponent },
+      { path: "reservation", component: ReservationComponent},
+      { path: "alluser", component: AllUserComponent },
+      { path: "edit-user/:id", component: EditUserComponent },
 
 
 
   // admin views
   {
-    path: "admin",
-    component: AdminComponent,
+    path: 'admin', component: AdminComponent ,
     children: [
-      { path: "dashboard", component: DashboardComponent },
+      { path: "alluser", component: AllUserComponent },
+      { path: 'edit-user/:userId', component: EditUserComponent },
       { path: "settings", component: SettingsComponent },
       { path: "tables", component: TablesComponent },
   //  { path: "maps", component: MapsComponent },
-      { path: "listequipe", component: EquipegetallComponent },
-      { path: "addequipe", component: CreateEquipeComponent },
-      { path: "updateequipe/:id", component: UpdateEquipeComponent },
-      { path: "updatemembre/:id", component: UpdateMembreComponent },
-      { path: "addmembre", component: CreateMembreComponent },
-      { path: "listemembre", component: MembregetallComponent },
-      { path: "maps", component: IncidentListComponent },
-      { path: "claims/claims-back", component: ClaimsBackComponent },
-      { path: "claims/claim-info/:id", component: ClaimInfoBackComponent },
-      { path: "claims/claim-create", component: ClaimCreateBackComponent },
-      { path: "claims/claim-update/:id", component: ClaimUpdateBackComponent },
-      { path: "claims/claims-stats", component: ClaimStatsBackComponent },
+  { path: "addequipe", component: CreateEquipeComponent },
+  { path: "updateequipe/:id", component: UpdateEquipeComponent },
+  { path: "updatemembre/:id", component: UpdateMembreComponent },
+  //{ path: "addmembre", component: CreateMembreComponent },
+  { path: "listemembre", component: MembregetallComponent },
+  { path: "listequipe", component: EquipegetallComponent },
       { path: "", redirectTo: "dashboard", pathMatch: "full" },
     ],
   },
@@ -113,7 +144,11 @@ const routes: Routes = [
     component: AuthComponent,
     children: [
       { path: "login", component: LoginComponent },
-      { path: "", component: RegisterComponent },
+      { path: "register", component: RegisterComponent },
+      { path: "forget-password", component: ForgetPasswordComponent },
+      { path: "forget-password", component: ForgetPasswordComponent },
+      { path: "verifyotp", component: VerifyOtpComponent },
+      { path: "new-password", component: NewPasswordComponent },
       { path: "*", redirectTo: "", pathMatch: "full" },
     ],
   },

@@ -1,0 +1,36 @@
+<app-header-stats></app-header-stats>
+
+<div class="overflow-x-auto">
+  <table class="min-w-full bg-white rounded-lg overflow-hidden shadow-md">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="px-6 py-3 text-left">ID</th>
+        <th class="px-6 py-3 text-left">First Name</th>
+        <th class="px-6 py-3 text-left">Last Name</th>
+        <th class="px-6 py-3 text-left">Email</th>
+        <th class="px-6 py-3 text-left">Role</th>
+        <th class="px-6 py-3 text-left">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-200">
+      <tr *ngFor="let user of users" class="hover:bg-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ user.id_user }}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ user.firstname }}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ user.lastname }}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ user.email }}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm">
+          <select [(ngModel)]="user.role" class="border rounded-md px-2 py-1">
+            <option value="ADMIN">Admin</option>
+            <option value="USER">User</option>
+            <option value="STAFF">Staff</option>
+          </select>
+          <button (click)="updateUserRole(user.id_user, user.role)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2 transition duration-300 ease-in-out">Save</button>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm">
+          <button (click)="openEditDialog(user.id_user, user)" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded ml-2 transition duration-300 ease-in-out">Edit</button>
+          <button (click)="confirmDelete(user.id_user)" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded ml-2 transition duration-300 ease-in-out">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

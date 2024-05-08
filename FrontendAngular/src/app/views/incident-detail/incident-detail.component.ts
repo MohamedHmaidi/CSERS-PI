@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Incident } from '../../../core/models/incident';
-import { IncidentService } from '..//../../core/service/incident.service';
+import { IncidentService } from '../../../core/service/incident.service';
 import * as L from 'leaflet';
 
 @Component({
@@ -21,6 +21,7 @@ export class IncidentDetailComponent implements OnInit {
   getIncidentDetails(incidentId: number): void {
     this.incidentService.getIncidentById(incidentId)
       .subscribe(incident => {
+        console.log(incident);
         this.incident = incident;
         if (this.incident.latitude && this.incident.longitude) {
           this.initMap();
@@ -44,5 +45,13 @@ export class IncidentDetailComponent implements OnInit {
     }).addTo(map);
   
     marker.bindPopup(`<b>Incident is Here</b>`).openPopup();
+  }
+
+  locateMe(): void {
+    const latitude = this.incident.latitude;
+    const longitude = this.incident.longitude;
+    const url = `https://www.google.com/maps/dir//${latitude},${longitude}/@${latitude},${longitude},19.5z?entry=ttu`;
+    window.open(url, '_blank');
+    
   }
 }

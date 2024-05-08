@@ -1,69 +1,94 @@
 <app-auth-navbar></app-auth-navbar>
+
 <main class="profile-page">
-    <!-- Display background section only for the first quiz -->
-    <section class="relative block h-500-px">
-      <div class="absolute top-0 w-full h-full bg-center bg-cover" style="background-image: url('assets/img/quizbg.jpg')"></div>
-      <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
-      <div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px" style="transform: translateZ(0)">
-        <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" version="1.1" viewBox="0 0 2560 100" x="0" y="0">
-          <polygon class="text-blueGray-200 fill-current" points="2560 0 2560 100 0 100"></polygon>
-        </svg>
-      </div>
+    <!-- Background section for the first quiz -->
+    <section class="relative block h-500-px" style="background-image: url('assets/img/quizbg.jpg');">
+        <div class="absolute top-0 w-full h-full bg-black opacity-50"></div>
+        <div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-20" style="transform: translateZ(0);">
+            <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" version="1.1" viewBox="0 0 2560 100" x="0" y="0">
+                <polygon class="text-blueGray-200 fill-current" points="2560 0 2560 100 0 100"></polygon>
+            </svg>
+        </div>
     </section>
 
     <!-- Quiz information section -->
-    <section *ngIf="currentQuestionIndex < quizQuestions.length" class="relative py-16 bg-blueGray-200" style="background-color: #f5f5f5;">
+    <section *ngIf="!quizComplete" class="relative py-16 bg-gray-200">
         <div class="container mx-auto px-4">
-            <div *ngIf="currentQuestion" class="quiz-container">
+            <div *ngIf="currentQuestion" class="quiz-container bg-white shadow-lg rounded-lg p-8" style="color: #333;">
+
+                <!-- Question text -->
                 <h2 class="text-3xl font-semibold mb-6">{{ currentQuestion.text }}</h2>
+
                 <!-- Render question based on quiz type -->
                 <ng-container *ngIf="currentQuiz && currentQuiz.type">
                     <ng-container *ngIf="currentQuiz.type === 'MULTIPLE_CHOICE'">
-                        <ul>
+                        <ul class="list-none">
+                            <!-- Display multiple-choice options -->
                             <li *ngFor="let option of [currentQuestion.answerChoiceA, currentQuestion.answerChoiceB, currentQuestion.answerChoiceC, currentQuestion.answerChoiceD]" class="mb-3">
-                                <label class="inline-flex items-center">
-                                    <input type="radio" [value]="option" [(ngModel)]="selectedAnswer" class="form-radio">
-                                    <span class="ml-2">{{ option }}</span>
+                                <label class="flex items-center">
+                                    <input type="radio" [value]="option" [(ngModel)]="selectedAnswer" class="form-radio mr-2">
+                                    <span class="text-base">{{ option }}</span>
                                 </label>
                             </li>
                         </ul>
                     </ng-container>
                     <ng-container *ngIf="currentQuiz.type === 'TRUE_FALSE'" class="mb-6">
-                        <label class="inline-flex items-center">
-                            <input type="radio" value="A" [(ngModel)]="selectedAnswer" class="form-radio">
-                            <span class="ml-2">True</span>
-                        </label>
-                        <label class="inline-flex items-center ml-6">
-                            <input type="radio" value="B" [(ngModel)]="selectedAnswer" class="form-radio">
-                            <span class="ml-2">False</span>
-                        </label>
+                        <!-- Display true/false options -->
+                        <div class="mb-3">
+                            <label class="flex items-center">
+                                <input type="radio" value="A" [(ngModel)]="selectedAnswer" class="form-radio mr-2">
+                                <span class="text-base">True</span>
+                            </label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="flex items-center">
+                                <input type="radio" value="B" [(ngModel)]="selectedAnswer" class="form-radio mr-2">
+                                <span class="text-base">False</span>
+                            </label>
+                        </div>
                     </ng-container>
-                    <ng-container *ngIf="currentQuiz.type === 'FILL_IN_THE_BLANK'">
-                        <input type="text" [(ngModel)]="selectedAnswer" class="form-input">
+                    <ng-container *ngIf="currentQuiz.type === 'FILL_IN_THE_BLANK'" class="mb-6">
+                        <!-- Display input field for fill-in-the-blank -->
+                        <input type="text" [(ngModel)]="selectedAnswer" class="form-input w-full px-4 py-2 rounded-lg shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
                     </ng-container>
-                    <ng-container *ngIf="currentQuiz.type === 'MATCHING'">
-                        <button (click)="selectAnswer('A')" class="btn">{{ currentQuestion.answerChoiceA }}</button>
-                        <button (click)="selectAnswer('B')" class="btn">{{ currentQuestion.answerChoiceB }}</button>
+                    <ng-container *ngIf="currentQuiz.type === 'MATCHING'" class="mb-6">
+                        <!-- Display matching options as buttons -->
+                        <div class="grid grid-cols-1 gap-4">
+                            <button (click)="selectAnswer('A')" class="btn bg-indigo-500 text-white px-4 py-2 rounded-lg">{{ currentQuestion.answerChoiceA }}</button>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 mt-4">
+                            <button (click)="selectAnswer('B')" class="btn bg-indigo-500 text-white px-4 py-2 rounded-lg">{{ currentQuestion.answerChoiceB }}</button>
+                        </div>
                     </ng-container>
-                    <ng-container *ngIf="currentQuiz.type === 'ESSAY'">
-                        <textarea [(ngModel)]="selectedAnswer" class="form-textarea"></textarea>
-                        <div *ngIf="currentQuestion.essayAnswerExample" class="text-gray-500">Essay Answer Example: {{ currentQuestion.essayAnswerExample }}</div>
+                    <ng-container *ngIf="currentQuiz.type === 'ESSAY'" class="mb-6">
+                        <!-- Display textarea for essay -->
+                        <textarea [(ngModel)]="selectedAnswer" class="form-textarea w-full px-4 py-2 rounded-lg shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"></textarea>
+                        <div *ngIf="currentQuestion.essayAnswerExample" class="text-gray-500 mt-2">Essay Answer Example: {{ currentQuestion.essayAnswerExample }}</div>
                     </ng-container>
                 </ng-container>
                 
-                <div *ngIf="showCorrectAnswerMessage" class="text-red-500">Incorrect answer. The correct answer is: {{ currentQuestion.correctAnswer }}</div>
-                <button (click)="onNextQuestion()" class="btn btn-primary mt-6"> <i class="fas fa-forward"></i></button>
+                <!-- Display message for incorrect answer -->
+                <div *ngIf="showCorrectAnswerMessage" class="text-red-500 mt-4">Incorrect answer. The correct answer is: {{ currentQuestion.correctAnswer }}</div>
+                
+                <!-- Next button -->
+                <button (click)="onNextQuestion()" class="btn bg-indigo-500 text-white px-4 py-2 rounded-lg mt-6 hover:bg-indigo-600 focus:outline-none block w-full text-center">Next <i class="fas fa-forward ml-2"></i></button>
             </div>
         </div>
     </section>
 
-    <!-- Display score after completing the quiz -->
-    <section *ngIf="currentQuestionIndex >= quizQuestions.length" class="relative py-16 bg-blueGray-200" style="background-color: #f5f5f5;">
+    <!-- Display all quiz questions and results after completing the quiz -->
+    <section *ngIf="quizComplete" class="relative py-16 bg-gray-200">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-semibold mb-6">Quiz Completed!</h2>
-            <p class="text-xl">Score: {{ calculateScore() }}</p>
-            <p class="text-lg">Correct Answers: {{ correctAnswers }}</p>
-            <p class="text-lg">Incorrect Answers: {{ totalQuestions - correctAnswers }}</p>
+            <h2 class="text-3xl font-semibold mb-6 text-green-600">Quiz Completed!</h2>
+            <p class="text-xl mb-8">Score: {{ score }}% / 100%</p>
+            <div class="grid grid-cols-1 gap-6">
+                <h3 class="text-2xl font-semibold mb-4 text-blue-600">Quiz Results</h3>
+                <div *ngFor="let result of quizResults" class="p-4 bg-white rounded-lg shadow-md">
+                    <p class="text-lg mb-2"><strong class="text-purple-600">Question:</strong> {{ result.question.text }}</p>
+                    <p class="text-lg mb-2"><strong class="text-orange-600">Your Answer:</strong> {{ result.selectedAnswer }}</p>
+                    <p class="text-lg"><strong class="text-red-600">Correct Answer:</strong> {{ result.correctAnswer }}</p>
+                </div>
+            </div>
         </div>
     </section>
 </main>

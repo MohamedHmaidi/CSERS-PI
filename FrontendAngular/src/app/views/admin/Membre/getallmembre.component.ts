@@ -14,6 +14,8 @@ import { createPopper } from '@popperjs/core';
 })
 export class MembregetallComponent implements OnInit {
   dropdownPopoverShow = false;
+  //hetha l parent 
+  //ElementRef how type
   @ViewChild('btnDropdownRef',{ static: false }) btnDropdownRef: ElementRef;
   @ViewChild('popoverDropdownRef',{ static: false }) popoverDropdownRef: ElementRef;
   membres: Membre[] = [];
@@ -46,7 +48,7 @@ export class MembregetallComponent implements OnInit {
   }
 
   openUpdatePage(id: number) {
-    this.router.navigate(['/admin/updatemembre', id]);
+    this.router.navigate(['/updatemembre', id]);
   }
 
   getAllMembres(): void {
@@ -168,7 +170,7 @@ export class MembregetallComponent implements OnInit {
       this.fetchRecommendedTeams(selectedMember.poste);
     }
   }
-
+//hethi ref leli fil html khater najmouch namlou slect fi ts donc fil html amalna #btnDropdownRef comme hiya balise de reference 
   createPopper(): void {
     createPopper(
       this.btnDropdownRef.nativeElement,

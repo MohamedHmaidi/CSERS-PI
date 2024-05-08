@@ -1,6 +1,7 @@
 
 export const environment = {
   production: false,
+  apiUrl:"http://localhost:8089/csers/",
   firebase: {
     apiKey: "AIzaSyCIjX-kSCM7J9vx3_G84m3XFsWy_I3Mtzw",
     authDomain: "csersnotification.firebaseapp.com",

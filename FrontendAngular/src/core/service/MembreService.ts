@@ -15,8 +15,8 @@ export class MembreService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getAllMembres(): Observable<Membre[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<Membre[]>(`${this.apiUrl}/getall`, { headers }).pipe(
+
+    return this.http.get<Membre[]>(`${this.apiUrl}/getall`).pipe(
       catchError((error) => {
         console.error('Error retrieving all membres:', error);
         throw error;
@@ -25,13 +25,13 @@ export class MembreService {
   }
 
   getMembreById(id: number): Observable<Membre> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<Membre>(`${this.apiUrl}/getMembreById/${id}` , { headers });
+
+    return this.http.get<Membre>(`${this.apiUrl}/getMembreById/${id}` );
   }
 
   getMembersByEquipeId(equipeId: number): Observable<Membre[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<Membre[]>(`${this.apiUrl}/byEquipeId/${equipeId}`, { headers });
+
+    return this.http.get<Membre[]>(`${this.apiUrl}/byEquipeId/${equipeId}`);
   }
 
   
@@ -44,13 +44,13 @@ export class MembreService {
     formData.append('experience', membre.experience ? membre.experience.toString() : '');
     formData.append('equipeInterventionId', membre.equipeInterventionId.toString());
     formData.append('imageFile', membre.imageFile);
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.post<Membre>(`${this.apiUrl}/createmembre`, formData, { headers });
+
+    return this.http.post<Membre>(`${this.apiUrl}/createmembre`, formData);
   }
 
   getRecommendedTeamsByPoste(poste: string): Observable<string[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<string[]>(`${this.apiUrl}/recommend-teams?poste=${poste}`, { headers }).pipe(
+
+    return this.http.get<string[]>(`${this.apiUrl}/recommend-teams?poste=${poste}`).pipe(
       catchError((error) => {
         console.error('Error retrieving recommended teams:', error);
         throw error;
@@ -59,8 +59,8 @@ export class MembreService {
   }
 
   updateMembreEquipe(memberId: number, equipeName: string): Observable<void> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.put<void>(`${this.apiUrl}/${memberId}/updateEquipe/${equipeName}`, {}, { headers })
+
+    return this.http.put<void>(`${this.apiUrl}/${memberId}/updateEquipe/${equipeName}`, {})
       .pipe(
         tap(() => console.log(`Member's equipe updated successfully`)),
         catchError((error) => {
@@ -70,13 +70,20 @@ export class MembreService {
       );
   }
 
-  updateMembre(id: number, membre: Membre): Observable<Membre> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.put<Membre>(`${this.apiUrl}/update/${id}`, membre , { headers });
-  }
+ 
 
   deleteMembre(id: number): Observable<string> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.delete<string>(`${this.apiUrl}/delete/${id}` , { headers });
+
+    return this.http.delete<string>(`${this.apiUrl}/delete/${id}` );
   }
+
+  updateMembre(id: number, membre: Membre): Observable<Membre> {
+    return this.http.put<Membre>(`${this.apiUrl}/update/${id}`, membre).pipe(
+      catchError((error) => {
+        console.error('Error updating member:', error);
+        throw error;
+      })
+    );
+  }
+
 }

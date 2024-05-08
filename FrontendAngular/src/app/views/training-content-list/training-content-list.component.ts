@@ -25,4 +25,9 @@ export class TrainingContentListComponent implements OnInit {
   viewQuizzes(trainingContentId: number): void {
     this.router.navigate(['/quizzes'], { queryParams: { trainingContentId } });
   }
+  
+  AddTrainingContent(): void {
+    // Navigate to the '/addtrainingcontent' route when the button is clicked
+    this.router.navigate(['/addtrainingcontent']);
+  }
 }

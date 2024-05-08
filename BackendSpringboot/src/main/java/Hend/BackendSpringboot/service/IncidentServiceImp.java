@@ -27,7 +27,7 @@ public class IncidentServiceImp implements IIncidentService{
     @Override
     public Incident addIncident(Incident i) {
 
-        i.setUser(userRepository.findById(1).orElse(null));
+
 
         return incidentRepository.save(i);
     }

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Membre } from '../../../core/models/Membre';
 import { MembreService } from '../../../core/service/MembreService';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html'
@@ -13,6 +13,7 @@ export class ProfileComponent implements OnInit {
   profileImageUrl: SafeUrl;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private membreService: MembreService,
     private sanitizer: DomSanitizer
@@ -24,6 +25,9 @@ export class ProfileComponent implements OnInit {
       console.log('ID from route params:', id);
       this.getMembreById(id);
     });
+  }
+  goToUpdateMembre(id: number): void {
+    this.router.navigate(['/admin/updatemembre', id]);
   }
 
   getMembreById(id: number): void {

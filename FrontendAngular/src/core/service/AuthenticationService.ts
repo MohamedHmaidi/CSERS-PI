@@ -1,64 +1,136 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { AuthenticationResponse } from '../models/AuthenticationResponse';
-import { RegisterRequest } from '../models/RegisterRequest';
-import { AuthenticationRequest } from '../models/AuthenticationRequest';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { Membre } from '../models/Membre';
+
+interface RegisterResponse { } // Define if needed
+
+interface LoginResponse {
+  access_token: string;
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  role: string; // Include the role in the login response
+}
+
+ export interface User {
+  userId: number;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  role?: string;
+}
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8089/csers/api/v1/auth'; 
-  private accessTokenKey = 'access_token';
-  private userIdKey = 'user_id';
+  
+  private apiUrll = environment.apiUrl + 'forgetpassword/'; 
+  private apiUrl = environment.apiUrl + 'auth/'; 
+  private currentUserSubject: BehaviorSubject<User | null>; 
 
-  constructor(private http: HttpClient) { }
-
-  private saveTokenAndUserId(token: string, userId: number): void {
-    console.log('Saving access token and user ID:', token, userId);
-    localStorage.setItem(this.accessTokenKey, token);
-    localStorage.setItem(this.userIdKey, userId.toString());
-    console.log('Saved access token and user ID:', localStorage.getItem(this.accessTokenKey), localStorage.getItem(this.userIdKey));
+  constructor(private http: HttpClient) { 
+    this.currentUserSubject = new BehaviorSubject<User | null>(this.getCurrentUserFromStorage());
   }
 
-  register(request: RegisterRequest): Observable<AuthenticationResponse> {
-    return this.http.post<AuthenticationResponse>(`${this.baseUrl}/register`, request)
-      .pipe(
-        tap(response => this.saveTokenAndUserId(response.access_token, response.user_id))
-      );
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}allUser`);
   }
 
-  authenticate(request: AuthenticationRequest): Observable<AuthenticationResponse> {
-    return this.http.post<AuthenticationResponse>(`${this.baseUrl}/authenticate`, request)
-      .pipe(
-        tap(response => {
-          console.log('Response from backend:', response); 
-          this.saveTokenAndUserId(response.access_token, response.user_id); 
-        })
-      );
+  register(data: any): Observable<RegisterResponse> {
+    console.log(data);
+    return this.http.post<RegisterResponse>(this.apiUrl + 'register', data);
   }
 
-  refreshToken(): Observable<void> {
-    console.log('Refreshing access token...');
-    return this.http.post<void>(`${this.baseUrl}/refresh-token`, null);
+  login(data: any): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.apiUrl + 'login', data);
   }
 
-  getAccessToken(): string | null {
-    const token = localStorage.getItem(this.accessTokenKey);
-    console.log('Retrieved access token:', token);
-    return token;
+  updateUser(id: number, user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}updateID/${id}`, user);
   }
 
-  getUserId(): number | null {
-    const userId = localStorage.getItem(this.userIdKey);
-    console.log('Retrieved user ID:', userId);
-    return userId ? parseInt(userId, 10) : null;
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}delete/${id}`);
   }
 
-  logout(): void {
-    localStorage.removeItem(this.accessTokenKey);
-    localStorage.removeItem(this.userIdKey);
+  storeCurrentUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSubject.next(user); 
   }
+
+  getCurrentUser(): User | null {
+    const userString = localStorage.getItem('user');
+    return userString ? JSON.parse(userString) : null;
+  }
+
+  getUserById(userId: number): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}getUserById/${userId}`);
+  }
+  
+
+  getCurrentUserFromStorage(): User | null {
+    const userString = localStorage.getItem('user'); 
+    return userString ? JSON.parse(userString) : null; 
+  }
+
+  storeCurrentUserID(user: User) {
+    localStorage.setItem('user_id', user.userId.toString());
+    this.currentUserSubject.next(user); 
+  }
+
+  getCurrentUserID(): number | null {
+    const userIdString = localStorage.getItem('user_id');
+    const userId = userIdString ? parseInt(userIdString, 10) : null;
+    return userId;
+  }
+
+  getCurrentUserToken(): string | null {
+    const userIdString = localStorage.getItem('access_token');
+    const userId = userIdString ? parseInt(userIdString, 10) : null;
+    return userIdString;
+  }
+
+  getUserByIdID(userId: number): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}getUserById/${userId}`);
+  }
+
+  verifyEmail(email: string): Observable<string> {
+    return this.http.post<string>(`${this.apiUrll}verifyMail/${email}`, {});
+  }
+
+  verifyOTP(otp: number, email: string): Observable<string> {
+    console.log(otp,email);
+    return this.http.post<string>(`${this.apiUrll}verify0tp/${otp}/${email}`, {});
+  }
+
+  changePassword(email: string, changePassword: string): Observable<string> {
+    return this.http.post<string>(`${this.apiUrll}changePassword/${email}/${changePassword}`,{});
+  }
+
+
+  updateUserRole(userId: number, newRole: string): Observable<User> {
+    console.log("Updating user role - Request Payload:", { userId, newRole });
+    const url = `${this.apiUrl}changeRole`;
+    return this.http.put<User>(url, { userId, newRole }); // Use 'newRole' instead of 'role'
+  }
+
+  updateUserInfo(id: number, user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}updateID/${id}`, user);
+  }  
+
+  getUserStatistics(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}stats`);
+  }
+
+  getStaffMembers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}stafflast`);
+  }
+  
 }
+

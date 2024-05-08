@@ -42,11 +42,14 @@ public class Incident {
     @Column(name = "status")
     private IncidentStatus status;
 
+
+
     @ManyToOne
     @JoinColumn(name = "id_user")
 
     private User user;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "equipe_intervention_incident",

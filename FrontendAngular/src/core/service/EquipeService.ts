@@ -16,9 +16,9 @@ export class EquipeService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   createEquipe(equipeData: Equipe): Observable<Equipe> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
     
-    return this.http.post<Equipe>(`${this.apiUrl}/create`, equipeData, { headers })
+    
+    return this.http.post<Equipe>(`${this.apiUrl}/create`, equipeData)
       .pipe(
         tap((createdEquipe) => console.log('Equipe created successfully:', createdEquipe)),
         catchError((error) => {
@@ -29,8 +29,8 @@ export class EquipeService {
   }
 
   getAllEquipes(): Observable<Equipe[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<Equipe[]>(`${this.apiUrl}/getall` , { headers } )
+
+    return this.http.get<Equipe[]>(`${this.apiUrl}/getall` )
       .pipe(
         tap((equipes) => console.log('Retrieved all equipes:', equipes)),
         catchError((error) => {
@@ -42,8 +42,8 @@ export class EquipeService {
 
   getAllEquipeNames(): Observable<string[]> {
     console.log("Fetching all equipe names...");
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<Equipe[]>(`${this.apiUrl}/getall`, { headers }).pipe(
+
+    return this.http.get<Equipe[]>(`${this.apiUrl}/getall`).pipe(
       tap(equipes => console.log("Retrieved all equipes:", equipes)),
       map(equipes => equipes.map(equipe => equipe.nomEquipe)),
       tap(names => console.log("Extracted equipe names:", names)),
@@ -56,8 +56,8 @@ export class EquipeService {
   
 
   getEquipeById(id: number): Observable<Equipe> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<Equipe>(`${this.apiUrl}/${id}` , { headers })
+
+    return this.http.get<Equipe>(`${this.apiUrl}/${id}` )
       .pipe(
         tap((equipe) => console.log('Retrieved equipe:', equipe)),
         catchError((error) => {
@@ -68,8 +68,8 @@ export class EquipeService {
   }
 
   getMemberImagesByEquipeId(equipeId: number): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<any>(`${this.apiUrl}/${equipeId}/membres/images`, { headers } )
+
+    return this.http.get<any>(`${this.apiUrl}/${equipeId}/membres/images` )
       .pipe(
         tap((images) => console.log('Retrieved member images:', images)),
         catchError((error) => {
@@ -81,8 +81,8 @@ export class EquipeService {
 
  
   updateEquipe(id: number, equipeData: Equipe): Observable<Equipe> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.put<Equipe>(`${this.apiUrl}/update/${id}`, equipeData, { headers })
+
+    return this.http.put<Equipe>(`${this.apiUrl}/update/${id}`, equipeData)
       .pipe(
         tap((updatedEquipe) => console.log('Equipe updated successfully:', updatedEquipe)),
         catchError((error) => {
@@ -93,8 +93,8 @@ export class EquipeService {
   }
 
   deleteEquipe(id: number): Observable<void> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers })
+
+    return this.http.delete<void>(`${this.apiUrl}/${id}`)
       .pipe(
         tap(() => console.log(`Equipe with ID ${id} deleted successfully`)),
         catchError((error) => {

@@ -15,34 +15,33 @@ export class ResponseService {
 
   // Fetch all responses from the backend
   getResponses(): Observable<ClaimResponse[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<ClaimResponse[]>(`${this.apiUrl}/retrieve-all-responses` , { headers });
+
+    return this.http.get<ClaimResponse[]>(`${this.apiUrl}/retrieve-all-responses` );
   }
 
   // Add a new response
   addResponse(response: ClaimResponse, claim: Claim): Observable<ClaimResponse> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    response.user = {id_user: 1};
+    response.user = {id_user: this.authService.getCurrentUser().userId};
     response.date = new Date();
     response.claim = claim
-    return this.http.post<ClaimResponse>(`${this.apiUrl}/add-response`, response , { headers });
+    console.log(response);
+    return this.http.post<ClaimResponse>(`${this.apiUrl}/add-response`, response );
   }
 
   // Retrieve a single response by ID
   getResponseById(responseId: number): Observable<ClaimResponse> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.get<ClaimResponse>(`${this.apiUrl}/retrieve-response/${responseId}`, { headers });
+  
+    return this.http.get<ClaimResponse>(`${this.apiUrl}/retrieve-response/${responseId}`);
   }
 
   // Update an existing response
   updateResponse(response: ClaimResponse): Observable<ClaimResponse> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.put<ClaimResponse>(`${this.apiUrl}/modify-response`, response, { headers });
+
+    return this.http.put<ClaimResponse>(`${this.apiUrl}/modify-response`, response);
   }
 
   // Delete a response by ID
   deleteResponse(responseId: number): Observable<void> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getAccessToken()}`);
-    return this.http.delete<void>(`${this.apiUrl}/remove-response/${responseId}`, { headers });
+    return this.http.delete<void>(`${this.apiUrl}/remove-response/${responseId}`);
   }
 }

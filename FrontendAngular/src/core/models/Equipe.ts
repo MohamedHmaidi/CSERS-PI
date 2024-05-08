@@ -7,5 +7,8 @@ export interface Equipe {
   nomEquipe: string;
   description: string;
   disponibilite?: Disponibilite;
-  membres?: (Membre | SafeUrl)[];
+ // membres?: (Membre | SafeUrl)[];
+ membres?: Membre[]; 
+  memberImages?: SafeUrl[]; 
+
 }

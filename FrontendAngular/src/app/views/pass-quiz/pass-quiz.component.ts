@@ -21,8 +21,11 @@ export class PassQuizComponent implements OnInit {
   totalQuestions: number = 0;
   correctAnswers: number = 0;
   score: number = 0;
+  quizComplete: boolean = false;
+  resultsDisplayed: boolean = false;
+  quizResults: { question: QuizQuestion, selectedAnswer: string | null, correctAnswer: string }[] = [];
 
-  constructor(private route: ActivatedRoute, 
+  constructor(private route: ActivatedRoute,
               private quizQuestionService: QuizQuestionService,
               private quizService: QuizService) { }
 
@@ -39,16 +42,14 @@ export class PassQuizComponent implements OnInit {
       this.currentQuiz = quiz;
     });
   }
-  
 
   loadQuizQuestions(quizId: number): void {
     this.quizQuestionService.getQuestionsByQuizId(quizId).subscribe((questions: QuizQuestion[]) => {
       this.quizQuestions = this.shuffleArray(questions);
-      this.totalQuestions = this.quizQuestions.length; // Set the total number of questions
+      this.totalQuestions = this.quizQuestions.length;
       this.presentQuestion();
     });
   }
-  
 
   shuffleArray(array: any[]): any[] {
     // Implement array shuffling (e.g., Fisher-Yates algorithm)
@@ -58,12 +59,11 @@ export class PassQuizComponent implements OnInit {
   presentQuestion(): void {
     if (this.currentQuestionIndex < this.quizQuestions.length) {
       this.currentQuestion = this.quizQuestions[this.currentQuestionIndex];
-      this.selectedAnswer = null; // Reset selected answer for each question
-      this.showCorrectAnswerMessage = false; // Reset the flag for showing correct answer message
+      this.selectedAnswer = null;
+      this.showCorrectAnswerMessage = false;
     } else {
-      console.log('End of quiz');
+      this.quizComplete = true;
       this.calculateScore();
-      console.log(this.calculateScore());
     }
   }
 
@@ -72,88 +72,69 @@ export class PassQuizComponent implements OnInit {
   }
 
   onNextQuestion(): void {
-    // Check if there is a current question and selected answer
     if (this.currentQuestion && this.selectedAnswer !== null) {
-      // Check if the quiz type is ESSAY
-      if (this.currentQuiz && this.currentQuiz.type === 'ESSAY') {
-        // Move to the next question directly without checking the answer
-        this.currentQuestionIndex++;
-        this.presentQuestion();
-        this.correctAnswers++;
-      } else if (this.currentQuiz && this.currentQuiz.type === 'TRUE_FALSE') {
-        // Check if the selected answer matches the correct answer
-        if ((this.selectedAnswer === 'A' && this.currentQuestion.correctAnswer === 'A') ||
-            (this.selectedAnswer === 'B' && this.currentQuestion.correctAnswer === 'B')) {
-          // Increment correctAnswers if the answer is correct
+      switch (this.currentQuiz?.type) {
+        case 'ESSAY':
           this.correctAnswers++;
-        }
-        // Always move to the next question
-        this.currentQuestionIndex++;
-        this.presentQuestion();
-      } else if (this.currentQuiz && this.currentQuiz.type === 'FILL_IN_THE_BLANK') {
-        // Check if the selected answer matches the correct answer
-        if (this.selectedAnswer.toLowerCase() === this.currentQuestion.correctAnswer.toLowerCase()) {
-          // Increment correctAnswers if the answer is correct
-          this.correctAnswers++;
-        }
-        // Always move to the next question
-        this.currentQuestionIndex++;
-        this.presentQuestion();
-      } else if (this.currentQuiz && this.currentQuiz.type === 'MATCHING') {
-        // Check if the selected answer matches the correct answer
-        if (this.selectedAnswer === this.currentQuestion.correctAnswer) {
-          // Increment correctAnswers if the answer is correct
-          this.correctAnswers++;
-        }
-        // Always move to the next question
-        this.currentQuestionIndex++;
-        this.presentQuestion();
-      } else {
-        // Map the selected answer to a letter (A, B, C, D)
-        let selectedLetter: string | null = null;
-        switch (this.selectedAnswer) {
-          case this.currentQuestion.answerChoiceA:
-            selectedLetter = 'A';
-            break;
-          case this.currentQuestion.answerChoiceB:
-            selectedLetter = 'B';
-            break;
-          case this.currentQuestion.answerChoiceC:
-            selectedLetter = 'C';
-            break;
-          case this.currentQuestion.answerChoiceD:
-            selectedLetter = 'D';
-            break;
-          default:
-            selectedLetter = null;
-        }
-  
-        // Check if the selected letter matches the correct answer letter
-        if (selectedLetter === this.currentQuestion.correctAnswer) {
-          // Increment correctAnswers if the answer is correct
-          this.correctAnswers++;
-        }
-        // Always move to the next question
-        this.currentQuestionIndex++;
-        this.presentQuestion();
+          break;
+        case 'TRUE_FALSE':
+          if (this.selectedAnswer === this.currentQuestion.correctAnswer) {
+            this.correctAnswers++;
+          }
+          break;
+        case 'FILL_IN_THE_BLANK':
+          if (this.selectedAnswer.toLowerCase() === this.currentQuestion.correctAnswer.toLowerCase()) {
+            this.correctAnswers++;
+          }
+          break;
+        case 'MATCHING':
+          if (this.selectedAnswer === this.currentQuestion.correctAnswer) {
+            this.correctAnswers++;
+          }
+          break;
+        default:
+          let selectedLetter: string | null = null;
+          switch (this.selectedAnswer) {
+            case this.currentQuestion.answerChoiceA:
+              selectedLetter = 'A';
+              break;
+            case this.currentQuestion.answerChoiceB:
+              selectedLetter = 'B';
+              break;
+            case this.currentQuestion.answerChoiceC:
+              selectedLetter = 'C';
+              break;
+            case this.currentQuestion.answerChoiceD:
+              selectedLetter = 'D';
+              break;
+          }
+          if (selectedLetter === this.currentQuestion.correctAnswer) {
+            this.correctAnswers++;
+          }
+          break;
       }
+
+      this.recordAnswer(); // Record the answer details
+      this.currentQuestionIndex++;
+      this.presentQuestion();
     }
   }
-  
 
-  calculateScore(): string {
-    return `${this.correctAnswers}/${this.totalQuestions} correct`;
-  }
-  
-  
-  
-  
-  
-
-
-  displayCorrectAnswerMessage(): void {
-    // Display a message to the user indicating the correct answer
-    this.showCorrectAnswerMessage = true;
+  recordAnswer(): void {
+    const correctAnswer = this.currentQuestion!.correctAnswer;
+    this.quizResults.push({
+      question: this.currentQuestion!,
+      selectedAnswer: this.selectedAnswer,
+      correctAnswer: correctAnswer
+    });
   }
 
+  calculateScore(): void {
+    this.score = (this.correctAnswers / this.totalQuestions) * 100;
+  }
+
+  displayResults(): void {
+    this.resultsDisplayed = true;
+  }
 }
+

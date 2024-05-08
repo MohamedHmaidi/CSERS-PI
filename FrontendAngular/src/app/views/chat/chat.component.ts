@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../../../core/service/chat.service';
 import { trigger, transition, animate, style } from '@angular/animations';
+import { AuthService } from 'src/core/service/AuthenticationService';
 
 @Component({
   selector: 'app-chat',
@@ -19,12 +20,14 @@ export class ChatComponent implements OnInit {
   message: string;
   usernameInput: string = '';
 
-  constructor(public chatService: ChatService) { }
+  constructor(public chatService: ChatService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.chatService.initializeWebSocketConnection(() => {
       this.fetchChatMessages(); // Fetch chat messages after establishing WebSocket connection
     });
+
+    this.setUsername();
   }
 
   sendMessage() {
@@ -36,7 +39,7 @@ export class ChatComponent implements OnInit {
 
   setUsername() {
     if (this.usernameInput.trim() !== '') {
-      this.chatService.setUsername(this.usernameInput);
+      this.chatService.setUsername(this.authService.getCurrentUser().firstName);
       this.usernameInput = '';
     }
   }
