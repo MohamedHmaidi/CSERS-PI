@@ -106,7 +106,7 @@ public class AuthController {
         }
     }*/
 
-    @PutMapping ("/updateID/{id}")
+    @PutMapping("/updateID/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") Integer id_user, @RequestBody User user) {
         User updatedUser = userService.updateUser(id_user, user);
         if (updatedUser != null) {

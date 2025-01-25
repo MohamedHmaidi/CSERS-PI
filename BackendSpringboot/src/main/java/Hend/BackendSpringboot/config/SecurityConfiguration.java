@@ -26,6 +26,8 @@ import java.io.IOException;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -39,27 +41,11 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-       http
+        http
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/auth/staff","/ressource/**","/auth/login","/auth/register","/forgetpassword/**","/forgetpassword/verify0tp/{otp}/{email}","/auth/changeRole","/auth/updateID/**","/auth/stats","/fcm/send", "/incident/**","/ws/**")
-                        .permitAll()
-                        .requestMatchers("/auth/allUser").hasAuthority("USER")
-                        .requestMatchers("/equipes/**").hasAuthority("USER")
-                        .requestMatchers("/membre/**").hasAuthority("USER")
-                        .requestMatchers("/reservation/**").hasAuthority("USER")
-                        .requestMatchers("/ressource/**").hasAuthority("USER")
-                        .requestMatchers("/claim/**").hasAuthority("USER")
-                        .requestMatchers("/incident/**").hasAuthority("USER")
-                        .requestMatchers("/quizzes/**").hasAuthority("USER")
-                        .requestMatchers("/response/**").hasAuthority("USER")
-                        .requestMatchers("/training-content/**").hasAuthority("USER")
-                        .requestMatchers("/incidentType/**").hasAuthority("USER")
-                        .requestMatchers("http://localhost:8089/csers/ws/**").hasAuthority("USER")
-                        .requestMatchers("/incident/GetAllMsg").hasAuthority("USER")
-                        .requestMatchers("/chat.sendMessage").hasAuthority("USER")
-                        .requestMatchers("/chat.addUser").hasAuthority("USER")
+                        .requestMatchers("/auth/login","http://localhost:8089/csers/ws/**","/chat.addUser","/chat.sendMessage","/auth/register","/incident/GetAllMsg","/forgetpassword/**","/forgetpassword/verify0tp/{otp}/{email}","/auth/changeRole","/auth/updateID/**","/auth/stats").permitAll()
                         .requestMatchers("/auth/allUser").hasAuthority("ADMIN")
                         .anyRequest()
                         .authenticated()
